@@ -168,7 +168,7 @@
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
               <div>
                 <div style="font:600 15px 'Bricolage Grotesque',sans-serif">Sudan Relief Updates</div>
-                <div style="font-size:12px;color:#8a8175;margin-top:2px">Humanitarian &amp; relief news · sample feed, awaiting review before posting to team chat</div>
+                <div style="font-size:12px;color:#8a8175;margin-top:2px">Live humanitarian reports (ReliefWeb) + wire updates · awaiting Margaret/Seyfu review before posting to team chat</div>
               </div>
               <sc-if value="{{ isNewsApprover }}" hint-placeholder-val="">
                 <div onClick="{{ checkForNews }}" style="padding:8px 14px;border-radius:10px;background:#f2ece1;color:#8a6f4a;font-weight:600;font-size:12.5px;cursor:pointer;white-space:nowrap">{{ checkNewsLabel }}</div>
@@ -180,7 +180,15 @@
             <sc-for list="{{ sudanNewsList }}" as="n" hint-placeholder-count="0">
               <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid rgba(44,39,33,.07)">
                 <div style="flex:1">
-                  <div style="font-weight:600;line-height:1.3">{{ n.headline }}</div>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="font-weight:600;line-height:1.3">
+                      <sc-if value="{{ n.hasUrl }}" hint-placeholder-val="">
+                        <a href="{{ n.url }}" target="_blank" rel="noopener" style="color:#2c2721;text-decoration:none;border-bottom:1px solid rgba(44,39,33,.25)">{{ n.headline }}</a>
+                      </sc-if>
+                      <sc-if value="{{ n.noUrlFlag }}" hint-placeholder-val="{{ true }}">{{ n.headline }}</sc-if>
+                    </div>
+                    <div style="{{ n.liveBadgeStyle }}">{{ n.liveBadge }}</div>
+                  </div>
                   <div style="font-size:13px;color:#5a5147;margin-top:3px">{{ n.summary }}</div>
                   <div style="font-size:11.5px;color:#8a8175;margin-top:5px">{{ n.source }} · {{ n.agoLabel }} · pending review</div>
                 </div>
@@ -420,6 +428,11 @@ class Component extends DCLogic {
   ADMINS = ['Margaret','Seyfu'];
   NEWS_VIEWERS = ['Margaret','Seyfu','Isabel','Nicola'];
   NEWS_APPROVERS = ['Margaret','Seyfu'];
+  // ReliefWeb requires a pre-approved "appname" for live API access (free, but you must
+  // register it yourself at https://apidoc.reliefweb.int/parameters#appname — takes a
+  // couple of minutes). Paste the approved name here to turn on live fetching; until then,
+  // "Check for updates" gracefully falls back to the sample pool below.
+  RELIEFWEB_APPNAME = 'REPLACE-WITH-YOUR-APPROVED-APPNAME';
   // Sample humanitarian/relief headlines used to simulate an incoming feed — swap in a
   // real news/RSS API to replace this pool when one is available.
   SUDAN_NEWS_POOL = [
@@ -511,16 +524,64 @@ class Component extends DCLogic {
 
   isNewsViewer(){ return this.NEWS_VIEWERS.includes(this.ME); }
   isNewsApprover(){ return this.NEWS_APPROVERS.includes(this.ME); }
-  checkForNews(){
-    if(!this.db || !this.isNewsApprover()) return;
-    this.setState({newsFetching:true});
+  fallbackSampleFetch(reason){
     this.db.ref('sudanNewsCursor').transaction(c=>(c||0)+1).then(res=>{
       const cursor = (res.snapshot.val()||1)-1;
       const item = this.SUDAN_NEWS_POOL[cursor % this.SUDAN_NEWS_POOL.length];
       this.db.ref('sudanNews').push({...item, fetchedAt:Date.now(), status:'pending'});
       this.setState({newsFetching:false});
-      this.flashMsg('Fetched a new relief update');
+      this.flashMsg(reason || 'Fetched a new relief update');
     });
+  }
+  async checkForNews(){
+    if(!this.db || !this.isNewsApprover()) return;
+    this.setState({newsFetching:true});
+    // Live source: ReliefWeb's public API (free, no key, CORS-open) — it aggregates real
+    // situation reports from OCHA, UNHCR, WHO, FEWS NET, NGOs, ReliefWeb itself, etc.
+    // Mainstream outlets (BBC/AP/Reuters/CNN/Al Jazeera/Sudan Tribune/Washington Post/
+    // Middle East Monitor) don't offer a free, browser-callable API, so those stay in the
+    // sample rotation below as a fallback/manual supplement.
+    try{
+      const url = `https://api.reliefweb.int/v2/reports?appname=${encodeURIComponent(this.RELIEFWEB_APPNAME)}&query[value]=sudan&sort[]=date:desc&limit=20`
+        + '&fields[include][]=title&fields[include][]=date.created&fields[include][]=source.name&fields[include][]=url';
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('bad status '+res.status);
+      const json = await res.json();
+      const items = (json.data||[]).map(d=>{
+        const f = d.fields||{};
+        return {
+          rwId: d.id,
+          headline: f.title,
+          source: (f.source && f.source[0] && f.source[0].name) || 'ReliefWeb',
+          dateISO: f.date && f.date.created,
+          url: f.url || ''
+        };
+      }).filter(it=>it.headline && it.rwId);
+      if(!items.length) throw new Error('empty response');
+
+      const seenSnap = await this.db.ref('sudanNewsSeen').once('value');
+      const seen = seenSnap.val() || {};
+      const fresh = items.filter(it=>!seen[it.rwId]).slice(0,6);
+      if(!fresh.length){ this.setState({newsFetching:false}); this.flashMsg('No new relief reports since your last check'); return; }
+
+      const updates = {};
+      fresh.forEach(it=>{
+        updates['sudanNews/rw_'+it.rwId] = {
+          headline: it.headline,
+          source: it.source,
+          url: it.url,
+          summary: it.dateISO ? `Published ${new Date(it.dateISO).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} · live via ReliefWeb` : 'Live via ReliefWeb',
+          fetchedAt: Date.now(), status:'pending', live:true
+        };
+        updates['sudanNewsSeen/'+it.rwId] = true;
+      });
+      await this.db.ref().update(updates);
+      this.setState({newsFetching:false});
+      this.flashMsg(`Fetched ${fresh.length} new relief report${fresh.length>1?'s':''} ✓`);
+    }catch(e){
+      console.warn('Live ReliefWeb fetch failed, falling back to sample pool', e);
+      this.fallbackSampleFetch('Live feed unavailable right now — added a sample update instead');
+    }
   }
   approveNews(key, item){
     if(!this.db) return;
@@ -852,6 +913,9 @@ class Component extends DCLogic {
       .sort((a,c)=>(c.fetchedAt||0)-(a.fetchedAt||0))
       .map(item=>({
         key:item.key, headline:item.headline, summary:item.summary, source:item.source,
+        url:item.url||'', hasUrl:!!item.url, noUrlFlag:!item.url,
+        liveBadge: item.live?'Live':'Sample',
+        liveBadgeStyle: item.live?'padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:#eaf1e7;color:#4f7a53':'padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:#f2ece1;color:#8a7f6f',
         agoLabel: item.fetchedAt ? new Date(item.fetchedAt).toLocaleDateString(undefined,{month:'short',day:'numeric'}) : '',
         onApprove:()=>this.approveNews(item.key, item), onDismiss:()=>this.dismissNews(item.key)
       }));
