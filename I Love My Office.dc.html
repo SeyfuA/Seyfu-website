@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Libre+Franklin:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#e9e5dd;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .dv-turn{padding:44px 48px 40px;scroll-margin-top:16px}
+  .dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 26px}
+  .dv-tid{font:600 10px 'IBM Plex Mono',monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+  .dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#37322a}
+  .dv-opts{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+  .dv-opt{flex:none;display:flex;flex-direction:column;gap:11px;scroll-margin-top:16px}
+  .dv-olabel{display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 system-ui,sans-serif;color:#8a8175}
+  .dv-oid{font:600 10.5px 'IBM Plex Mono',monospace;padding:3px 7px;background:rgba(0,0,0,.07);color:#37322a;border-radius:5px;text-decoration:none}
+  .dv-opt:target .dv-oid{background:#c66a4a;color:#fff}
+  .dv-next{margin:26px 0 0;font:12.5px/1.6 system-ui,sans-serif;color:#8a8175}
+  .dash{box-shadow:0 4px 24px rgba(40,34,26,.10);border-radius:18px;overflow:hidden}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">I Love My Office — 3 rooms · 5 desks each · 1 meeting room · real roster</span></div>
+  <div class="dv-opts">
+
+    <!-- ============ OPTION 1a — WARM & FRIENDLY ============ -->
+    <div class="dv-opt" id="1a">
+      <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Warm &amp; friendly — soft sidebar, human copy</div>
+      <div class="dash" style="width:1160px;display:flex;background:#f6f1e9;color:#2c2721;font-size:14px">
+
+        <!-- sidebar -->
+        <aside style="width:214px;flex:none;background:#efe7da;padding:22px 16px;display:flex;flex-direction:column;gap:6px;border-right:1px solid rgba(44,39,33,.07)">
+          <div style="display:flex;align-items:center;gap:9px;padding:2px 8px 20px">
+            <div style="width:30px;height:30px;border-radius:9px;background:#c66a4a;display:flex;align-items:center;justify-content:center;color:#fff;font:700 15px 'Bricolage Grotesque',sans-serif">♥</div>
+            <div style="font:700 15px 'Bricolage Grotesque',sans-serif;letter-spacing:-.01em">I Love My Office</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;background:#c66a4a;color:#fff;font-weight:600"><span style="width:7px;height:7px;border-radius:50%;background:#fff"></span>Home</div>
+          <div style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;color:#6b6355"><span style="width:7px;height:7px;border-radius:50%;background:#c9bfae"></span>Book a desk</div>
+          <div style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;color:#6b6355"><span style="width:7px;height:7px;border-radius:50%;background:#c9bfae"></span>Meeting room</div>
+          <div style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;color:#6b6355"><span style="width:7px;height:7px;border-radius:50%;background:#c9bfae"></span>People</div>
+          <div style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;color:#6b6355"><span style="width:7px;height:7px;border-radius:50%;background:#c9bfae"></span>Facilities</div>
+          <div style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;color:#6b6355"><span style="width:7px;height:7px;border-radius:50%;background:#c9bfae"></span>Team chat</div>
+          <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid rgba(44,39,33,.08)">
+            <div style="width:34px;height:34px;border-radius:50%;background:#7a9e7e;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">NI</div>
+            <div style="line-height:1.25"><div style="font-weight:600">Nicola</div><div style="font-size:11.5px;color:#8a8175">Office 1</div></div>
+          </div>
+        </aside>
+
+        <!-- main -->
+        <main style="flex:1;padding:26px 28px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end">
+            <div>
+              <div style="font:600 12px 'Hanken Grotesk';color:#a89a83;letter-spacing:.04em;text-transform:uppercase">Tuesday · July 8</div>
+              <div style="font:600 27px 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;margin-top:3px">Good morning, Nicola 👋</div>
+            </div>
+            <div style="display:flex;gap:10px">
+              <div style="padding:9px 15px;border-radius:11px;background:#fffdf9;border:1px solid rgba(44,39,33,.1);font-weight:600;font-size:13px">Find a desk</div>
+              <div style="padding:9px 17px;border-radius:11px;background:#2c2721;color:#f6f1e9;font-weight:600;font-size:13px">Book the room</div>
+            </div>
+          </div>
+
+          <!-- your desk today (hero) -->
+          <div style="background:#fffdf9;border-radius:16px;padding:20px 22px;display:flex;gap:22px;align-items:center;border:1px solid rgba(44,39,33,.06)">
+            <div style="flex:1">
+              <div style="font-size:12px;color:#a89a83;font-weight:600;letter-spacing:.03em;text-transform:uppercase">You're all set for today</div>
+              <div style="font:600 21px 'Bricolage Grotesque',sans-serif;margin:5px 0 3px">Desk 1 · Office 1 (left)</div>
+              <div style="color:#8a8175;font-size:13px">Checked in 9:02am · Abdoul, Jesugnon &amp; Chabi are in with you</div>
+            </div>
+            <div style="display:flex;gap:9px">
+              <div style="padding:10px 16px;border-radius:11px;background:#eaf1e7;color:#4f7a53;font-weight:600;font-size:13px">✓ Checked in</div>
+              <div style="padding:10px 16px;border-radius:11px;border:1px solid rgba(44,39,33,.14);font-weight:600;font-size:13px">Release desk</div>
+            </div>
+          </div>
+
+          <!-- floor plan: 3 rooms + meeting room -->
+          <div style="background:#fffdf9;border-radius:16px;padding:18px 20px;border:1px solid rgba(44,39,33,.06)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+              <div style="font:600 15px 'Bricolage Grotesque',sans-serif">The office · live map</div>
+              <div style="font-size:12px;color:#8a8175">6 of 15 desks free</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+              <!-- Office 1 -->
+              <div style="border:1px solid rgba(44,39,33,.1);border-radius:12px;padding:12px">
+                <div style="font-size:12px;font-weight:600;color:#8a8175;margin-bottom:9px">Office 1 · left</div>
+                <div style="display:flex;gap:6px">
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#c66a4a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">You</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">AB</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">JE</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#c9e0c9"></span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">CH</span>
+                </div>
+              </div>
+              <!-- Office 2 -->
+              <div style="border:1px solid rgba(44,39,33,.1);border-radius:12px;padding:12px">
+                <div style="font-size:12px;font-weight:600;color:#8a8175;margin-bottom:9px">Office 2 · middle</div>
+                <div style="display:flex;gap:6px">
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">CI</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">LE</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#c9e0c9"></span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">SE</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#c9e0c9"></span>
+                </div>
+              </div>
+              <!-- Office 3 -->
+              <div style="border:1px solid rgba(44,39,33,.1);border-radius:12px;padding:12px">
+                <div style="font-size:12px;font-weight:600;color:#8a8175;margin-bottom:9px">Office 3 · right</div>
+                <div style="display:flex;gap:6px">
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">MO</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#c9e0c9"></span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">SR</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#e4d3cb;color:#a06a52;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700">AH</span>
+                  <span style="flex:1;aspect-ratio:1;border-radius:7px;background:#c9e0c9"></span>
+                </div>
+              </div>
+            </div>
+            <!-- meeting room -->
+            <div style="margin-top:12px;border:1px dashed rgba(44,39,33,.18);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+              <div style="font-size:13px;font-weight:600">🚪 The Meeting Room</div>
+              <div style="padding:5px 12px;border-radius:9px;background:#f3e4dc;color:#b5674a;font-weight:600;font-size:12px">Busy till 11:30</div>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:14px;font-size:11.5px;color:#8a8175">
+              <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#c9e0c9"></span>Free desk</span>
+              <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#e4d3cb"></span>Taken</span>
+              <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#c66a4a"></span>You</span>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <!-- meeting room schedule -->
+            <div style="background:#fffdf9;border-radius:16px;padding:18px 20px;border:1px solid rgba(44,39,33,.06)">
+              <div style="font:600 15px 'Bricolage Grotesque',sans-serif;margin-bottom:12px">Meeting room · today</div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(44,39,33,.06)"><div><div style="font-weight:600">9:00 · Team standup</div><div style="font-size:12px;color:#8a8175">Office 2 · 30 min</div></div><div style="padding:6px 13px;border-radius:9px;background:#f3e4dc;color:#b5674a;font-weight:600;font-size:12.5px">Booked</div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(44,39,33,.06)"><div><div style="font-weight:600">10:30 · Open</div><div style="font-size:12px;color:#8a8175">up to 90 min</div></div><div style="padding:6px 13px;border-radius:9px;background:#eaf1e7;color:#4f7a53;font-weight:600;font-size:12.5px">Book</div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0"><div><div style="font-weight:600">14:00 · Client call</div><div style="font-size:12px;color:#8a8175">Mohammed · 60 min</div></div><div style="padding:6px 13px;border-radius:9px;background:#f3e4dc;color:#b5674a;font-weight:600;font-size:12.5px">Booked</div></div>
+            </div>
+            <!-- facilities -->
+            <div style="background:#fffdf9;border-radius:16px;padding:18px 20px;border:1px solid rgba(44,39,33,.06)">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font:600 15px 'Bricolage Grotesque',sans-serif">Facilities</div><div style="font-size:12px;color:#c66a4a;font-weight:600">2 open</div></div>
+              <div style="font-size:13px;color:#5a5147;display:flex;gap:9px;padding:6px 0"><span style="width:7px;height:7px;border-radius:50%;background:#c66a4a;margin-top:6px"></span><div>AC too cold in Office 2 · <span style="color:#8a8175">reported by Chiara, 1h ago</span></div></div>
+              <div style="font-size:13px;color:#5a5147;display:flex;gap:9px;padding:6px 0"><span style="width:7px;height:7px;border-radius:50%;background:#d9a441;margin-top:6px"></span><div>Printer jammed · <span style="color:#8a8175">assigned to Ops</span></div></div>
+              <div style="margin-top:8px;padding:8px 0 0;border-top:1px solid rgba(44,39,33,.06);font-size:12.5px;color:#c66a4a;font-weight:600">+ Report an issue</div>
+            </div>
+          </div>
+        </main>
+
+        <!-- chat rail -->
+        <aside style="width:272px;flex:none;background:#efe7da;border-left:1px solid rgba(44,39,33,.07);display:flex;flex-direction:column">
+          <div style="padding:18px 18px 12px;border-bottom:1px solid rgba(44,39,33,.08)"><div style="font:600 15px 'Bricolage Grotesque',sans-serif">Team chat</div><div style="font-size:12px;color:#8a8175">All offices · 9 online</div></div>
+          <div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+            <div style="display:flex;gap:9px"><div style="width:28px;height:28px;flex:none;border-radius:50%;background:#8a6fb0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">CI</div><div><div style="background:#fffdf9;border-radius:4px 12px 12px 12px;padding:8px 11px;font-size:12.5px;line-height:1.35">Meeting room free after 11:30 if anyone needs it 👍</div><div style="font-size:10.5px;color:#a89a83;margin-top:3px">Chiara · 9:14</div></div></div>
+            <div style="display:flex;gap:9px;flex-direction:row-reverse"><div style="width:28px;height:28px;flex:none;border-radius:50%;background:#7a9e7e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">NI</div><div style="text-align:right"><div style="background:#c66a4a;color:#fff;border-radius:12px 4px 12px 12px;padding:8px 11px;font-size:12.5px;line-height:1.35;text-align:left">Perfect, grabbing it 🙌</div><div style="font-size:10.5px;color:#a89a83;margin-top:3px">You · 9:15</div></div></div>
+            <div style="display:flex;gap:9px"><div style="width:28px;height:28px;flex:none;border-radius:50%;background:#c98a4a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">AB</div><div><div style="background:#fffdf9;border-radius:4px 12px 12px 12px;padding:8px 11px;font-size:12.5px;line-height:1.35">Coffee's fresh in Office 1 ☕</div><div style="font-size:10.5px;color:#a89a83;margin-top:3px">Abdoul · 9:20</div></div></div>
+          </div>
+          <div style="padding:12px 14px;border-top:1px solid rgba(44,39,33,.08)"><div style="background:#fffdf9;border:1px solid rgba(44,39,33,.12);border-radius:12px;padding:9px 13px;font-size:12.5px;color:#a89a83">Message the team…</div></div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 1b — PROFESSIONAL / CORPORATE ============ -->
+    <div class="dv-opt" id="1b">
+      <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Professional — top nav, data-dense, admin-leaning</div>
+      <div class="dash" style="width:1160px;background:#eef1f4;color:#1a2230;font-family:'Libre Franklin',sans-serif;font-size:13.5px">
+
+        <!-- top bar -->
+        <header style="background:#fff;border-bottom:1px solid #e2e7ec;display:flex;align-items:center;padding:0 22px;height:58px;gap:26px">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px"><span style="width:26px;height:26px;border-radius:7px;background:#3d6bc4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">♥</span>I Love My Office</div>
+          <nav style="display:flex;gap:4px;font-size:13px">
+            <span style="padding:8px 13px;border-radius:8px;background:#eaf0fa;color:#3d6bc4;font-weight:600">Overview</span>
+            <span style="padding:8px 13px;color:#6b7684">Desks</span>
+            <span style="padding:8px 13px;color:#6b7684">Meeting room</span>
+            <span style="padding:8px 13px;color:#6b7684">Directory</span>
+            <span style="padding:8px 13px;color:#6b7684">Facilities</span>
+            <span style="padding:8px 13px;color:#6b7684">Chat</span>
+          </nav>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+            <span style="font-size:12.5px;color:#6b7684">3 offices · 1 meeting room</span>
+            <div style="width:32px;height:32px;border-radius:50%;background:#3d6bc4;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">NI</div>
+          </div>
+        </header>
+
+        <div style="padding:22px 24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700;font-size:19px;letter-spacing:-.01em">Workplace overview · Tue 8 Jul</div>
+            <div style="display:flex;gap:9px"><div style="padding:8px 14px;border-radius:8px;border:1px solid #cdd5de;background:#fff;font-weight:600;font-size:12.5px">Export</div><div style="padding:8px 15px;border-radius:8px;background:#3d6bc4;color:#fff;font-weight:600;font-size:12.5px">Assign seats</div></div>
+          </div>
+
+          <!-- KPI row -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+            <div style="background:#fff;border:1px solid #e2e7ec;border-radius:12px;padding:15px 17px"><div style="font-size:12px;color:#6b7684;font-weight:600">Desks occupied</div><div style="font-size:26px;font-weight:700;margin-top:4px">9 / 15</div><div style="font-size:11.5px;color:#6b7684;margin-top:2px">across 3 offices</div></div>
+            <div style="background:#fff;border:1px solid #e2e7ec;border-radius:12px;padding:15px 17px"><div style="font-size:12px;color:#6b7684;font-weight:600">Meeting room</div><div style="font-size:26px;font-weight:700;margin-top:4px">Busy</div><div style="font-size:11.5px;color:#2f9e6f;font-weight:600;margin-top:2px">free from 11:30</div></div>
+            <div style="background:#fff;border:1px solid #e2e7ec;border-radius:12px;padding:15px 17px"><div style="font-size:12px;color:#6b7684;font-weight:600">People on-site</div><div style="font-size:26px;font-weight:700;margin-top:4px">16</div><div style="font-size:11.5px;color:#6b7684;margin-top:2px">of 20 staff</div></div>
+            <div style="background:#fff;border:1px solid #e2e7ec;border-radius:12px;padding:15px 17px"><div style="font-size:12px;color:#6b7684;font-weight:600">Open tickets</div><div style="font-size:26px;font-weight:700;margin-top:4px">2</div><div style="font-size:11.5px;color:#c4553d;font-weight:600;margin-top:2px">1 high priority</div></div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px">
+            <!-- occupancy table by office -->
+            <div style="background:#fff;border:1px solid #e2e7ec;border-radius:12px;overflow:hidden">
+              <div style="padding:14px 18px;border-bottom:1px solid #eef1f4;font-weight:700;font-size:14px;display:flex;justify-content:space-between"><span>Desk occupancy by office</span><span style="font-weight:500;color:#6b7684;font-size:12px">today</span></div>
+              <div style="display:grid;grid-template-columns:1.3fr 1fr 1.6fr 0.7fr;padding:9px 18px;font-size:11px;color:#8a94a0;font-weight:600;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid #eef1f4"><span>Office</span><span>Seated</span><span>Who's in</span><span>Free</span></div>
+              <div style="display:grid;grid-template-columns:1.3fr 1fr 1.6fr 0.7fr;padding:12px 18px;align-items:center;border-bottom:1px solid #f3f5f8"><span style="font-weight:600">Office 1 · left</span><span>4 / 5</span><span style="color:#6b7684;font-size:12.5px">Nicola, Abdoul, Jesugnon, Chabi</span><span><span style="padding:3px 9px;border-radius:20px;background:#e6f4ec;color:#2f9e6f;font-size:11px;font-weight:600">1</span></span></div>
+              <div style="display:grid;grid-template-columns:1.3fr 1fr 1.6fr 0.7fr;padding:12px 18px;align-items:center;border-bottom:1px solid #f3f5f8"><span style="font-weight:600">Office 2 · middle</span><span>3 / 5</span><span style="color:#6b7684;font-size:12.5px">Chiara, Leena, Seyfu</span><span><span style="padding:3px 9px;border-radius:20px;background:#e6f4ec;color:#2f9e6f;font-size:11px;font-weight:600">2</span></span></div>
+              <div style="display:grid;grid-template-columns:1.3fr 1fr 1.6fr 0.7fr;padding:12px 18px;align-items:center"><span style="font-weight:600">Office 3 · right</span><span>3 / 5</span><span style="color:#6b7684;font-size:12.5px">Mohammed, Sarah, Ahmed</span><span><span style="padding:3px 9px;border-radius:20px;background:#e6f4ec;color:#2f9e6f;font-size:11px;font-weight:600">2</span></span></div>
+            </div>
+
+            <!-- meeting room schedule + facilities -->
+            <div style="background:#fff;border:1px solid #e2e7ec;border-radius:12px;padding:15px 18px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="font-weight:700;font-size:14px">Meeting room</span><span style="font-size:12px;color:#6b7684">today</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px solid #f3f5f8"><span>9:00 Team standup</span><span style="color:#c48a3d;font-weight:600">Booked</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px solid #f3f5f8"><span>10:30 Open</span><span style="color:#2f9e6f;font-weight:600">Free</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0"><span>14:00 Client call</span><span style="color:#c48a3d;font-weight:600">Booked</span></div>
+              <div style="margin-top:12px;padding-top:12px;border-top:1px solid #eef1f4">
+                <div style="font-weight:600;font-size:12.5px;margin-bottom:8px">Facilities queue</div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0"><span style="color:#3a445a">AC too cold · Office 2</span><span style="color:#c4553d;font-weight:600">High</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0"><span>Printer jam</span><span style="color:#c48a3d;font-weight:600">Med</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- chat strip -->
+          <div style="background:#fff;border:1px solid #e2e7ec;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+            <div style="font-weight:700;font-size:13.5px;flex:none">Team chat</div>
+            <div style="flex:1;display:flex;gap:18px;overflow:hidden">
+              <span style="font-size:12.5px;color:#3a445a"><b style="color:#1a2230">Chiara</b> Meeting room free after 11:30</span>
+              <span style="font-size:12.5px;color:#3a445a"><b style="color:#1a2230">Abdoul</b> Coffee's fresh in Office 1</span>
+            </div>
+            <div style="flex:none;background:#f4f6f9;border:1px solid #e2e7ec;border-radius:8px;padding:7px 13px;font-size:12.5px;color:#8a94a0;width:180px">Message team…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 1c — PLAYFUL / MODERN ============ -->
+    <div class="dv-opt" id="1c">
+      <div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Playful — bold blocks, icon rail, big personality</div>
+      <div class="dash" style="width:1160px;display:flex;background:#141210;color:#f5f1ea;font-family:'Hanken Grotesk',sans-serif;font-size:14px">
+
+        <!-- icon rail -->
+        <aside style="width:66px;flex:none;background:#0d0c0b;display:flex;flex-direction:column;align-items:center;padding:18px 0;gap:14px">
+          <div style="width:38px;height:38px;border-radius:12px;background:#ff6b4a;color:#fff;display:flex;align-items:center;justify-content:center;font:700 18px 'Space Grotesk',sans-serif">♥</div>
+          <div style="width:40px;height:40px;border-radius:12px;background:#2a2723;display:flex;align-items:center;justify-content:center;color:#ff6b4a;font-weight:700;margin-top:8px">◈</div>
+          <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#6b645a">▦</div>
+          <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#6b645a">◍</div>
+          <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#6b645a">◐</div>
+          <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#6b645a">✦</div>
+          <div style="margin-top:auto;width:36px;height:36px;border-radius:50%;background:#b8e04a;color:#141210;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">NI</div>
+        </aside>
+
+        <main style="flex:1;padding:26px 28px;display:flex;flex-direction:column;gap:18px;background:#181613">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end">
+            <div>
+              <div style="font:600 12px 'Space Grotesk';color:#ff6b4a;letter-spacing:.06em;text-transform:uppercase">Tuesday · 08 Jul</div>
+              <div style="font:700 30px 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin-top:4px;line-height:1">Hey Nicola —<br>you're in Office 1.</div>
+            </div>
+            <div style="padding:12px 20px;border-radius:14px;background:#ff6b4a;color:#fff;font-weight:700;font-size:14px;font-family:'Space Grotesk'">Book the room →</div>
+          </div>
+
+          <!-- hero desk card, bold -->
+          <div style="background:linear-gradient(120deg,#b8e04a,#8fce3d);border-radius:20px;padding:22px 24px;color:#141210;display:flex;align-items:center;gap:20px">
+            <div style="flex:1">
+              <div style="font:700 12px 'Space Grotesk';letter-spacing:.05em;text-transform:uppercase;opacity:.7">Today you're at</div>
+              <div style="font:700 30px 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:4px 0 2px">Desk 1 · Office 1 🌤</div>
+              <div style="font-size:13.5px;opacity:.8">Checked in 9:02 · 4 of 5 desks taken in your room</div>
+            </div>
+            <div style="background:#141210;color:#b8e04a;padding:12px 18px;border-radius:13px;font-weight:700;font-size:13.5px;font-family:'Space Grotesk'">✓ You're in</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <!-- meeting room -->
+            <div style="background:#221f1b;border-radius:18px;padding:18px 20px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px"><div style="font:700 16px 'Space Grotesk',sans-serif">The Meeting Room</div><span style="padding:4px 11px;border-radius:20px;background:#3a3630;color:#ff8a6a;font-size:11px;font-weight:700">BUSY TILL 11:30</span></div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;justify-content:space-between;align-items:center;background:#2b2823;border-radius:11px;padding:11px 14px"><span style="font-weight:600">9:00 · Standup</span><span style="padding:4px 11px;border-radius:20px;background:#3a3630;color:#a39a8c;font-size:11.5px;font-weight:700">BOOKED</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;background:#2b2823;border-radius:11px;padding:11px 14px"><span style="font-weight:600">10:30 · Open</span><span style="padding:4px 11px;border-radius:20px;background:#b8e04a;color:#141210;font-size:11.5px;font-weight:700">GRAB IT</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;background:#2b2823;border-radius:11px;padding:11px 14px"><span style="font-weight:600">14:00 · Client call</span><span style="padding:4px 11px;border-radius:20px;background:#3a3630;color:#a39a8c;font-size:11.5px;font-weight:700">BOOKED</span></div>
+              </div>
+            </div>
+
+            <!-- who's in -->
+            <div style="background:#221f1b;border-radius:18px;padding:18px 20px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px"><div style="font:700 16px 'Space Grotesk',sans-serif">Who's in today</div><span style="font-size:12px;color:#a39a8c">16 on-site</span></div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <div style="width:42px;height:42px;border-radius:50%;background:#8a6fb0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">CI</div>
+                <div style="width:42px;height:42px;border-radius:50%;background:#c98a4a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">AB</div>
+                <div style="width:42px;height:42px;border-radius:50%;background:#5a8bb0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">MO</div>
+                <div style="width:42px;height:42px;border-radius:50%;background:#c46a8a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">SR</div>
+                <div style="width:42px;height:42px;border-radius:50%;background:#5aa08a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">LE</div>
+                <div style="width:42px;height:42px;border-radius:50%;background:#2b2823;color:#a39a8c;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">+11</div>
+              </div>
+              <div style="margin-top:14px;padding-top:12px;border-top:1px solid #2f2b25;display:flex;justify-content:space-between;font-size:13px"><span style="color:#a39a8c">Facilities</span><span style="color:#ff6b4a;font-weight:700">2 open tickets →</span></div>
+            </div>
+          </div>
+        </main>
+
+        <!-- chat panel -->
+        <aside style="width:272px;flex:none;background:#0d0c0b;display:flex;flex-direction:column">
+          <div style="padding:18px 18px 13px;border-bottom:1px solid #23201c;display:flex;justify-content:space-between;align-items:center"><div style="font:700 15px 'Space Grotesk',sans-serif">The floor</div><span style="font-size:11px;color:#b8e04a;font-weight:700">● 9 online</span></div>
+          <div style="flex:1;padding:15px 16px;display:flex;flex-direction:column;gap:13px">
+            <div><div style="font-size:11px;color:#6b645a;margin-bottom:3px;font-weight:600">Chiara</div><div style="background:#221f1b;border-radius:4px 13px 13px 13px;padding:9px 12px;font-size:12.5px;line-height:1.4">Room free after 11:30 if anyone needs it 👍</div></div>
+            <div style="align-self:flex-end;max-width:82%"><div style="font-size:11px;color:#6b645a;margin-bottom:3px;font-weight:600;text-align:right">You</div><div style="background:#ff6b4a;color:#fff;border-radius:13px 4px 13px 13px;padding:9px 12px;font-size:12.5px;line-height:1.4">grabbing 10:30 🙌</div></div>
+            <div><div style="font-size:11px;color:#6b645a;margin-bottom:3px;font-weight:600">Abdoul</div><div style="background:#221f1b;border-radius:4px 13px 13px 13px;padding:9px 12px;font-size:12.5px;line-height:1.4">Coffee's fresh in Office 1 ☕</div></div>
+          </div>
+          <div style="padding:13px 15px;border-top:1px solid #23201c"><div style="background:#221f1b;border-radius:13px;padding:10px 14px;font-size:12.5px;color:#6b645a">Say something…</div></div>
+        </aside>
+      </div>
+    </div>
+
+  </div>
+  <p class="dv-next">Try next: "build out the desk-booking flow from <a class="dv-oid" href="#1a">1a</a>" · "make <a class="dv-oid" href="#1b">1b</a> the manager view and <a class="dv-oid" href="#1c">1c</a> the employee view" · "make the floor map fully interactive" · "add a full people directory"</p>
+</section>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#f2ede3;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#17140f;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:#ff5a2c;color:#fff}
+  @keyframes slide{to{transform:translateX(-50%)}}
+</style>
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="20" fill="#17140f"/><text x="50" y="64" font-family="Georgia,serif" font-size="42" fill="#ff5a2c" text-anchor="middle" font-weight="700">S</text></svg>
+</template>
+</helmet>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+
+  <!-- NAV -->
+  <nav style="display:flex;align-items:center;justify-content:space-between;padding:26px 0;position:sticky;top:0;background:rgba(242,237,227,.86);backdrop-filter:blur(8px);z-index:40">
+    <a href="#top" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:-.01em"><span style="width:30px;height:30px;border-radius:9px;background:#17140f;color:#ff5a2c;display:flex;align-items:center;justify-content:center;font:800 16px 'Bricolage Grotesque',sans-serif">S</span>Seyfu&nbsp;Asfaw</a>
+    <div style="display:flex;align-items:center;gap:clamp(14px,2.5vw,30px);font-weight:600;font-size:14.5px">
+      <a href="#about" style="opacity:.7">About</a>
+      <a href="#skills" style="opacity:.7">Skills</a>
+      <a href="#work" style="opacity:.7">Work</a>
+      <a href="#resume" style="opacity:.7">Résumé</a>
+      <a href="#contact" style="padding:9px 18px;border-radius:40px;background:#17140f;color:#f2ede3">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" style="padding:clamp(32px,6vw,72px) 0 clamp(40px,6vw,80px);max-width:940px">
+    <div style="display:inline-flex;align-items:center;gap:9px;font:500 12.5px 'IBM Plex Mono',monospace;letter-spacing:.02em;color:#14675a;margin-bottom:22px"><span style="width:8px;height:8px;border-radius:50%;background:#14675a;display:inline-block"></span>HUMANITARIAN RESEARCHER · NAIROBI, KENYA</div>
+    <h1 style="font:800 clamp(46px,9vw,104px)/0.92 'Bricolage Grotesque',sans-serif;letter-spacing:-.035em;margin:0">Seyfu Alebachew <span style="color:#ff5a2c">Asfaw.</span></h1>
+    <p style="font-size:clamp(16px,2.2vw,21px);line-height:1.55;color:#4a443b;max-width:640px;margin:26px 0 30px">Senior Assessment Officer at <b style="color:#17140f">IMPACT Initiatives — Sudan</b>, specialising in cash &amp; market assessments across humanitarian contexts. PhD candidate in Business Administration, closing the gap between research and practice — including building tools like the app below.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px">
+      <a href="#work" style="padding:14px 26px;border-radius:40px;background:#ff5a2c;color:#fff;font-weight:700;font-size:15px">View my work →</a>
+      <a href="Seyfu-Asfaw-CV.pdf" download style="padding:14px 26px;border-radius:40px;border:1.5px solid #17140f;font-weight:700;font-size:15px">Download CV</a>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;font:500 12.5px 'IBM Plex Mono',monospace;color:#6a6255">
+      <span style="padding:7px 13px;border-radius:30px;border:1px solid #d8cfbe">Cash &amp; Market</span>
+      <span style="padding:7px 13px;border-radius:30px;border:1px solid #d8cfbe">MEB / CVA</span>
+      <span style="padding:7px 13px;border-radius:30px;border:1px solid #d8cfbe">Python · R · GIS</span>
+      <span style="padding:7px 13px;border-radius:30px;border:1px solid #d8cfbe">EN · AM · DE</span>
+    </div>
+  </header>
+</div>
+
+<!-- SKILLS BAND -->
+<div style="background:#17140f;color:#f2ede3;overflow:hidden;padding:20px 0;transform:rotate(-1.2deg);margin:0 -10px">
+  <div style="display:flex;width:max-content;animation:slide 26s linear infinite;font:700 clamp(22px,3.2vw,34px) 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em">
+    <div style="display:flex;gap:34px;padding-right:34px;align-items:center">
+      <span>Cash &amp; Market Assessments</span><span style="color:#ff5a2c">✦</span><span>Humanitarian Research</span><span style="color:#ff5a2c">✦</span><span>Data Analysis</span><span style="color:#ff5a2c">✦</span><span>Survey Design</span><span style="color:#ff5a2c">✦</span><span>Field Monitoring</span><span style="color:#ff5a2c">✦</span><span>Tool Building</span><span style="color:#ff5a2c">✦</span>
+    </div>
+    <div style="display:flex;gap:34px;padding-right:34px;align-items:center" aria-hidden="true">
+      <span>Cash &amp; Market Assessments</span><span style="color:#ff5a2c">✦</span><span>Humanitarian Research</span><span style="color:#ff5a2c">✦</span><span>Data Analysis</span><span style="color:#ff5a2c">✦</span><span>Survey Design</span><span style="color:#ff5a2c">✦</span><span>Field Monitoring</span><span style="color:#ff5a2c">✦</span><span>Tool Building</span><span style="color:#ff5a2c">✦</span>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+
+  <!-- ABOUT -->
+  <section id="about" style="padding:clamp(56px,8vw,100px) 0;display:flex;gap:clamp(28px,5vw,72px);flex-wrap:wrap">
+    <div style="flex:0 0 auto;width:260px;max-width:100%">
+      <div style="font:500 12.5px 'IBM Plex Mono',monospace;color:#ff5a2c;letter-spacing:.04em">01 — ABOUT</div>
+      <h2 style="font:700 clamp(28px,3.5vw,40px)/1.05 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;margin:14px 0 0">A researcher who ships.</h2>
+    </div>
+    <div style="flex:1 1 380px;min-width:280px;font-size:clamp(16px,2vw,19px);line-height:1.65;color:#3f3a32">
+      <p style="margin:0 0 18px">Since November 2022 I've worked with <b style="color:#17140f">IMPACT Initiatives</b> — first in Ethiopia, and since October 2025 with the <b style="color:#17140f">Sudan</b> team — leading assessments that turn complex field realities into evidence humanitarian actors can act on, with a focus on cash and market systems.</p>
+      <p style="margin:0">Alongside the work, I'm pursuing a <b style="color:#17140f">PhD in Business Administration</b> at the University of Electronic Science and Technology of China. I like closing the gap between research and practice — including building software, like the office-management app below, that solves real day-to-day problems.</p>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" style="padding:0 0 clamp(56px,8vw,100px)">
+    <div style="font:500 12.5px 'IBM Plex Mono',monospace;color:#ff5a2c;letter-spacing:.04em;margin-bottom:8px">02 — SKILLS</div>
+    <h2 style="font:700 clamp(28px,4vw,46px)/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.025em;margin:0 0 30px">What I bring</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px">
+      <div style="background:#fff;border:1.5px solid #17140f;border-radius:20px;padding:22px 24px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#14675a;margin-bottom:14px">TECHNICAL &amp; ANALYTICAL</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Python</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">R</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Excel</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Tableau</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Power BI</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">ArcGIS</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">QGIS</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">KoBo Toolbox</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Adobe InDesign</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Adobe Illustrator</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1.5px solid #17140f;border-radius:20px;padding:22px 24px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#14675a;margin-bottom:14px">HUMANITARIAN EXPERTISE</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Cash &amp; Voucher Assistance</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Minimum Expenditure Basket (MEB)</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Market Analysis</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Humanitarian Assessments</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">MEAL</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Project Cycle Management</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Stakeholder Coordination</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1.5px solid #17140f;border-radius:20px;padding:22px 24px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#14675a;margin-bottom:14px">PROFESSIONAL</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Problem-Solving</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Communication &amp; Diplomacy</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Process Innovation</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Project Management</span><span style="padding:7px 13px;border-radius:30px;background:#f2ede3;border:1px solid #e0d8c9;font-size:13.5px;font-weight:500;white-space:nowrap">Capacity Building &amp; Training</span>
+        </div>
+      </div>
+      <div style="background:#17140f;color:#f2ede3;border-radius:20px;padding:22px 24px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#ff8a6a;margin-bottom:14px">LANGUAGES</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:600;font-size:15px">English</span><span style="font:500 12.5px 'IBM Plex Mono',monospace;color:#c9c3b6">Fluent</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:600;font-size:15px">Amharic</span><span style="font:500 12.5px 'IBM Plex Mono',monospace;color:#c9c3b6">Mother tongue</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:600;font-size:15px">German</span><span style="font:500 12.5px 'IBM Plex Mono',monospace;color:#c9c3b6">Beginner</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESUME -->
+  <section id="resume" style="padding:0 0 clamp(56px,8vw,100px)">
+    <div style="font:500 12.5px 'IBM Plex Mono',monospace;color:#ff5a2c;letter-spacing:.04em;margin-bottom:8px">03 — RÉSUMÉ</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;margin-bottom:34px">
+      <h2 style="font:700 clamp(28px,4vw,46px)/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.025em;margin:0">Experience &amp; education</h2>
+      <a href="Seyfu-Asfaw-CV.pdf" download style="font-weight:700;font-size:14.5px;color:#ff5a2c">Download full CV (PDF) →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
+      <div style="background:#fff;border:1.5px solid #17140f;border-radius:20px;padding:26px 28px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#14675a;margin-bottom:14px">EXPERIENCE</div>
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><h3 style="font:700 20px 'Bricolage Grotesque',sans-serif;margin:0">Senior Assessment Officer</h3><span style="font:500 12.5px 'IBM Plex Mono',monospace;color:#8a8478;white-space:nowrap">Oct 2025 — Now</span></div>
+        <div style="font-weight:600;color:#ff5a2c;margin:3px 0 10px">IMPACT Initiatives — Sudan</div>
+        <p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#4a443b">Design and lead humanitarian assessments with a specialisation in cash &amp; market analysis — from survey design and field monitoring through analysis and reporting that informs response decisions.</p>
+        <div style="border-top:1px solid #e7dfd0;padding-top:18px;display:flex;justify-content:space-between;gap:12px;align-items:baseline"><h3 style="font:700 20px 'Bricolage Grotesque',sans-serif;margin:0">Assessment Officer</h3><span style="font:500 12.5px 'IBM Plex Mono',monospace;color:#8a8478;white-space:nowrap">Nov 2022 — Oct 2025</span></div>
+        <div style="font-weight:600;color:#ff5a2c;margin:3px 0 10px">IMPACT Initiatives — Ethiopia</div>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:#4a443b">Delivered field assessments and data collection across Ethiopia programmes, focusing on cash &amp; market monitoring, survey design and analysis.</p>
+      </div>
+      <div style="background:#fff;border:1.5px solid #17140f;border-radius:20px;padding:26px 28px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#14675a;margin-bottom:14px">EDUCATION</div>
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><h3 style="font:700 20px 'Bricolage Grotesque',sans-serif;margin:0">PhD, Business Administration</h3><span style="font:500 12.5px 'IBM Plex Mono',monospace;color:#8a8478;white-space:nowrap">In progress</span></div>
+        <div style="font-weight:600;color:#ff5a2c;margin:3px 0 12px">Univ. of Electronic Science &amp; Technology of China</div>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:#4a443b">Researching at the intersection of business administration and applied decision-making, bridging academic rigour with real-world humanitarian and organisational practice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work" style="padding:0 0 clamp(56px,8vw,100px)">
+    <div style="font:500 12.5px 'IBM Plex Mono',monospace;color:#ff5a2c;letter-spacing:.04em;margin-bottom:8px">04 — SELECTED WORK</div>
+    <h2 style="font:700 clamp(28px,4vw,46px)/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.025em;margin:0 0 30px">Things I've built</h2>
+
+    <!-- featured app -->
+    <div style="background:#17140f;color:#f2ede3;border-radius:26px;padding:clamp(26px,4vw,44px);display:flex;gap:clamp(24px,4vw,52px);flex-wrap:wrap;align-items:center">
+      <div style="flex:1 1 340px;min-width:280px">
+        <div style="display:inline-block;white-space:nowrap;font:500 11.5px 'IBM Plex Mono',monospace;color:#ff5a2c;border:1px solid rgba(255,90,44,.5);padding:5px 11px;border-radius:30px;margin-bottom:20px">FEATURED · WEB &amp; MOBILE APP</div>
+        <h3 style="font:700 clamp(30px,4vw,44px)/1 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;margin:0 0 16px">I Love My Office</h3>
+        <p style="font-size:16px;line-height:1.6;color:#c9c3b6;margin:0 0 26px;max-width:460px">A desk-booking &amp; office-management app: sign in by name, book a desk across three offices, reserve the meeting room, submit daily/weekly plans, see who's in, and chat with the team — as a full web dashboard and a mobile app.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="I%20Love%20My%20Office%20(Web).html" style="padding:13px 24px;border-radius:40px;background:#ff5a2c;color:#fff;font-weight:700;font-size:15px">Launch web app →</a>
+          <a href="I%20Love%20My%20Office%20(Mobile).html" style="padding:13px 24px;border-radius:40px;border:1.5px solid #f2ede3;color:#f2ede3;font-weight:700;font-size:15px">Open mobile app →</a>
+        </div>
+      </div>
+      <div style="flex:1 1 260px;min-width:240px;display:flex;justify-content:center">
+        <div style="width:200px;background:#f2ede3;border-radius:26px;padding:12px;box-shadow:0 20px 50px rgba(0,0,0,.4)">
+          <div style="border-radius:16px;overflow:hidden;background:#efe7da">
+            <div style="background:#c66a4a;color:#fff;padding:14px 16px;font:700 15px 'Bricolage Grotesque',sans-serif;display:flex;align-items:center;gap:8px"><span style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center">♥</span>I Love My Office</div>
+            <div style="padding:14px 14px 18px;color:#2c2721">
+              <div style="font:600 13px 'Bricolage Grotesque',sans-serif;margin-bottom:9px">Office 2 · middle</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+                <span style="aspect-ratio:1;border-radius:6px;background:#e8dbd2"></span><span style="aspect-ratio:1;border-radius:6px;background:#dcecd8"></span><span style="aspect-ratio:1;border-radius:6px;background:#c66a4a"></span><span style="aspect-ratio:1;border-radius:6px;background:#e8dbd2"></span><span style="aspect-ratio:1;border-radius:6px;background:#dcecd8;grid-column:1/-1;justify-self:center;width:calc(50% - 3px)"></span>
+              </div>
+              <div style="margin-top:12px;height:8px;border-radius:5px;background:#e4ddd0"></div>
+              <div style="margin-top:7px;height:8px;width:70%;border-radius:5px;background:#e4ddd0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- room to grow -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:18px">
+      <div style="border:1.5px dashed #b8b0a1;border-radius:20px;padding:26px 28px;color:#8a8478">
+        <div style="font:700 19px 'Bricolage Grotesque',sans-serif;color:#17140f;margin-bottom:6px">Research &amp; publications</div>
+        <p style="margin:0;font-size:14.5px;line-height:1.55">Add reports, assessment briefs or papers here — a title, a line, and a link each.</p>
+      </div>
+      <div style="border:1.5px dashed #b8b0a1;border-radius:20px;padding:26px 28px;color:#8a8478">
+        <div style="font:700 19px 'Bricolage Grotesque',sans-serif;color:#17140f;margin-bottom:6px">Add another project</div>
+        <p style="margin:0;font-size:14.5px;line-height:1.55">Room for your next tool, dataset or side project as your portfolio grows.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="padding:0 0 clamp(60px,8vw,110px)">
+    <div style="background:#ff5a2c;color:#fff;border-radius:28px;padding:clamp(32px,5vw,64px);text-align:center">
+      <div style="font:500 12.5px 'IBM Plex Mono',monospace;letter-spacing:.05em;opacity:.85;margin-bottom:16px">05 — GET IN TOUCH</div>
+      <h2 style="font:800 clamp(32px,5.5vw,64px)/1 'Bricolage Grotesque',sans-serif;letter-spacing:-.03em;margin:0 0 30px">Let's work together.</h2>
+      <a href="mailto:seyfualebachew@gmail.com" style="display:inline-block;font:700 clamp(18px,3vw,26px) 'Bricolage Grotesque',sans-serif;border-bottom:2px solid rgba(255,255,255,.6);padding-bottom:3px;margin-bottom:34px">seyfualebachew@gmail.com</a>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+        <a href="https://www.linkedin.com/in/seyfu-asfaw" target="_blank" style="padding:12px 22px;border-radius:40px;background:#17140f;color:#f2ede3;font-weight:700;font-size:15px">LinkedIn — Seyfu Asfaw</a>
+        <a href="tel:+251912042365" style="padding:12px 22px;border-radius:40px;background:rgba(255,255,255,.16);color:#fff;font-weight:700;font-size:15px">+251 912 042 365</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:0 0 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;color:#8a8478;font-size:13.5px;border-top:1px solid #ddd5c6;padding-top:24px">
+    <div style="font-weight:600;color:#17140f">Seyfu Alebachew Asfaw</div>
+    <div>© 2026 · Based in Nairobi, Kenya</div>
+  </footer>
+</div>
+</x-dc>
+</body>
+</html>

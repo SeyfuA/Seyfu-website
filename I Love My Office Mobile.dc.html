@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth-compat.js"></script>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:#d8d3ca;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:#2c2721;display:flex;align-items:center;justify-content:center}
+  input,select{font-family:inherit}
+  select{appearance:none;-webkit-appearance:none}
+  .scr::-webkit-scrollbar{display:none}
+</style>
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="20" fill="#c66a4a"/>
+    <path d="M50 72c-1-.7-18-12-22.5-22.3C24 41 27 33 34.5 33c4.7 0 7.8 2.9 9.5 5.8C45.7 35.9 48.8 33 53.5 33 61 33 64 41 60.5 49.7 56 60 51 71.3 50 72z" fill="#fff"/>
+  </svg>
+</template>
+</helmet>
+
+<div style="width:100%;max-width:400px;height:100vh;max-height:860px;margin:auto;background:#f6f1e9;display:flex;flex-direction:column;overflow:hidden;position:relative;box-shadow:0 12px 48px rgba(40,34,26,.22);border-radius:26px">
+
+  <!-- FLASH -->
+  <sc-if value="{{ flash }}" hint-placeholder-val="">
+    <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:30;background:#3f6a45;color:#fff;padding:9px 16px;border-radius:11px;font-weight:600;font-size:12.5px;box-shadow:0 6px 20px rgba(40,34,26,.25)">{{ flash }}</div>
+  </sc-if>
+
+  <!-- ===== SIGN IN ===== -->
+  <sc-if value="{{ notSignedIn }}" hint-placeholder-val="{{ true }}">
+    <div class="scr" style="flex:1;overflow-y:auto;padding:44px 22px 30px;text-align:center">
+      <div style="width:48px;height:48px;border-radius:14px;background:#c66a4a;display:flex;align-items:center;justify-content:center;color:#fff;font:700 24px 'Bricolage Grotesque',sans-serif;margin:0 auto 16px">♥</div>
+      <div style="font:700 23px 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em">I Love My Office</div>
+
+      <sc-if value="{{ noPendingName }}" hint-placeholder-val="{{ true }}">
+        <div style="color:#8a8175;font-size:13.5px;margin:7px 0 24px">Tap your name to sign in.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+          <sc-for list="{{ loginPeople }}" as="p" hint-placeholder-count="20">
+            <div onClick="{{ p.onSel }}" style="background:#fffdf9;border:1px solid rgba(44,39,33,.1);border-radius:13px;padding:13px 8px;display:flex;flex-direction:column;align-items:center;gap:8px">
+              <div style="{{ p.avatarStyle }}">{{ p.initials }}</div>
+              <div style="font-weight:600;font-size:13px">{{ p.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasPendingName }}" hint-placeholder-val="">
+        <div style="margin-top:10px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:9px;margin-bottom:20px">
+            <div style="{{ pendingAvatarStyle }}">{{ pendingInitials }}</div>
+            <div style="font:600 18px 'Bricolage Grotesque',sans-serif">{{ pendingName }}</div>
+            <div onClick="{{ cancelPending }}" style="font-size:12px;color:#a89a83;font-weight:600">Not you? Choose again</div>
+          </div>
+          <input type="password" value="{{ passwordInput }}" onChange="{{ onPasswordInput }}" onKeyDown="{{ onPasswordKey }}" placeholder="Enter your password" autofocus="true" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(44,39,33,.18);background:#fffdf9;font-size:14.5px;outline:none;text-align:center;margin-bottom:12px">
+          <sc-if value="{{ loginError }}" hint-placeholder-val="">
+            <div style="color:#b5674a;font-weight:600;font-size:12.5px;margin:-6px 0 12px">{{ loginError }}</div>
+          </sc-if>
+          <div onClick="{{ submitLogin }}" style="padding:12px;border-radius:12px;background:#2c2721;color:#f6f1e9;font-weight:700;font-size:14.5px">Sign in</div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ===== APP ===== -->
+  <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ true }}">
+
+    <header style="flex:none;padding:18px 18px 13px;display:flex;justify-content:space-between;align-items:center;background:#efe7da;border-bottom:1px solid rgba(44,39,33,.07)">
+      <div>
+        <div style="font-size:11px;color:#a89a83;font-weight:600;letter-spacing:.05em;text-transform:uppercase">{{ dateStr }}</div>
+        <div style="font:700 19px 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;margin-top:2px">{{ pageTitle }}</div>
+      </div>
+      <div onClick="{{ signOut }}" style="{{ meAvatarStyle }}">{{ meInitials }}</div>
+    </header>
+
+    <div class="scr" style="flex:1;overflow-y:auto;padding:16px 16px 96px">
+
+      <!-- HOME -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:linear-gradient(135deg,#c66a4a,#b0563a);border-radius:18px;padding:18px 20px;color:#fff">
+            <div style="font-size:11px;opacity:.85;font-weight:600;letter-spacing:.03em;text-transform:uppercase">{{ heroKicker }}</div>
+            <div style="font:600 20px 'Bricolage Grotesque',sans-serif;margin:6px 0 3px">{{ myDeskLabel }}</div>
+            <div style="font-size:12.5px;opacity:.9">{{ nearbyText }}</div>
+            <div style="display:flex;gap:9px;margin-top:14px">
+              <div style="{{ checkBadgeStyle }}">{{ checkBadgeLabel }}</div>
+              <div onClick="{{ releaseDesk }}" style="padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.18);color:#fff;font-weight:600;font-size:12.5px">Release</div>
+            </div>
+          </div>
+
+          <div onClick="{{ goPlan }}" style="background:#fffdf9;border-radius:16px;padding:16px 18px;border:1px solid rgba(44,39,33,.06);display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font:600 15px 'Bricolage Grotesque',sans-serif">Your weekly plan</div><div style="font-size:12px;color:#8a8175;margin-top:2px">{{ planHint }}</div></div>
+            <div style="{{ weekSubmittedStyle }}">{{ weekSubmittedLabel }}</div>
+          </div>
+
+          <div style="background:#fffdf9;border-radius:16px;padding:16px 18px;border:1px solid rgba(44,39,33,.06)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font:600 15px 'Bricolage Grotesque',sans-serif">Live map</div><div style="font-size:12px;color:#8a8175">{{ freeLabel }}</div></div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ homeOffices }}" as="office" hint-placeholder-count="3">
+                <div>
+                  <div style="font-size:11.5px;font-weight:600;color:#8a8175;margin-bottom:7px">{{ office.title }}</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-width:150px">
+                    <sc-for list="{{ office.desks }}" as="desk" hint-placeholder-count="5">
+                      <span onClick="{{ desk.onSel }}" style="{{ desk.style }}">{{ desk.label }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div onClick="{{ goRoom }}" style="background:#fffdf9;border-radius:16px;padding:16px 18px;border:1px solid rgba(44,39,33,.06);display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font:600 15px 'Bricolage Grotesque',sans-serif">🚪 Meeting Room</div><div style="font-size:12px;color:#8a8175;margin-top:2px">{{ roomCountLabel }}</div></div>
+            <div style="{{ roomStatusStyle }}">{{ roomStatusLabel }}</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- PLAN -->
+      <sc-if value="{{ isPlan }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:16px 18px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font:600 15px 'Bricolage Grotesque',sans-serif">{{ weekLabel }}</div><div style="{{ weekSubmittedStyle }}">{{ weekSubmittedLabel }}</div></div>
+              <div style="font-size:11.5px;color:#8a8175;margin:-6px 0 12px">Your desk booking follows these days. Resets Friday 5PM.</div>
+              <sc-for list="{{ weekRows }}" as="row" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
+                  <div style="width:38px;font-weight:600;font-size:13px">{{ row.day }}</div>
+                  <div style="flex:1;display:flex;gap:5px;background:#f2ece1;border-radius:10px;padding:4px">
+                    <sc-for list="{{ row.seg }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.onSel }}" style="{{ o.style }}">{{ o.label }}</div></sc-for>
+                  </div>
+                </div>
+              </sc-for>
+              <input value="{{ weekNote }}" onChange="{{ onWeekNote }}" placeholder="Notes (optional)" style="width:100%;padding:11px 13px;border-radius:11px;border:1px solid rgba(44,39,33,.15);background:#f6f1e9;font-size:13.5px;outline:none;margin:8px 0 14px">
+              <div onClick="{{ submitPlan }}" style="text-align:center;padding:12px;border-radius:11px;background:#2c2721;color:#f6f1e9;font-weight:600;font-size:14px">Submit weekly plan</div>
+            </div>
+          <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:6px 18px 10px">
+            <div style="font:600 15px 'Bricolage Grotesque',sans-serif;padding:12px 0 4px">Submitted plans</div>
+            <sc-if value="{{ noPlans }}" hint-placeholder-val=""><div style="padding:8px 0 14px;color:#a89a83;font-size:13px">No plans yet.</div></sc-if>
+            <sc-for list="{{ plansList }}" as="p" hint-placeholder-count="0">
+              <div style="display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-top:1px solid rgba(44,39,33,.07)">
+                <div style="{{ p.avatarStyle }}">{{ p.initials }}</div>
+                <div style="flex:1"><div style="font-weight:600;font-size:13.5px">{{ p.who }} <span style="color:#c66a4a;font-size:11.5px">· {{ p.scopeLabel }}</span></div><div style="font-size:12.5px;color:#5a5147;margin-top:1px">{{ p.line1 }}</div><div style="font-size:12px;color:#8a8175;margin-top:1px">{{ p.line2 }}</div>
+                  <sc-if value="{{ p.canEdit }}" hint-placeholder-val="">
+                    <div onClick="{{ p.onEdit }}" style="display:inline-block;margin-top:6px;padding:4px 11px;border-radius:9px;background:#f2ece1;color:#8a6f4a;font-weight:600;font-size:11px">Edit</div>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- DESKS -->
+      <sc-if value="{{ isDesks }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:#eaf1e7;border:1px solid rgba(79,122,83,.25);border-radius:14px;padding:12px 16px;color:#3f6a45;font-size:13px"><b>{{ myDeskLabel }}</b><br>Tap a free desk to book it for your in-office days.</div>
+          <sc-for list="{{ deskOffices }}" as="office" hint-placeholder-count="3">
+            <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:14px 16px 16px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px"><div style="font:600 15px 'Bricolage Grotesque',sans-serif">{{ office.title }}</div><div style="font-size:11.5px;color:#8a8175">{{ office.freeText }}</div></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+                <sc-for list="{{ office.desks }}" as="desk" hint-placeholder-count="5">
+                  <div onClick="{{ desk.onSel }}" style="{{ desk.style }}">
+                    <span style="font-size:10.5px;opacity:.7;font-weight:600">Desk {{ desk.num }}</span>
+                    <span style="font-weight:700;font-size:13.5px">{{ desk.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ROOM (bookable) -->
+      <sc-if value="{{ isRoom }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font:600 17px 'Bricolage Grotesque',sans-serif">The Meeting Room</div><div style="font-size:12.5px;color:#8a8175;margin-top:2px">Seats 8 · projector</div></div>
+            <div style="{{ roomStatusStyle }}">{{ roomStatusLabel }}</div>
+          </div>
+          <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:16px 18px">
+            <div style="font:600 15px 'Bricolage Grotesque',sans-serif;margin-bottom:12px">Book the room</div>
+            <div style="display:flex;gap:9px;margin-bottom:10px">
+              <div style="flex:1"><div style="font-size:11.5px;color:#8a8175;font-weight:600;margin-bottom:5px">From</div>
+                <select value="{{ newStart }}" onChange="{{ onStartChange }}" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(44,39,33,.15);background:#f6f1e9;font-size:13.5px;font-weight:600">
+                  <sc-for list="{{ timeOpts }}" as="t" hint-placeholder-count="6"><option value="{{ t }}">{{ t }}</option></sc-for>
+                </select></div>
+              <div style="flex:1"><div style="font-size:11.5px;color:#8a8175;font-weight:600;margin-bottom:5px">To</div>
+                <select value="{{ newEnd }}" onChange="{{ onEndChange }}" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(44,39,33,.15);background:#f6f1e9;font-size:13.5px;font-weight:600">
+                  <sc-for list="{{ timeOpts }}" as="t" hint-placeholder-count="6"><option value="{{ t }}">{{ t }}</option></sc-for>
+                </select></div>
+            </div>
+            <input value="{{ newTitle }}" onChange="{{ onTitleChange }}" placeholder="Purpose · e.g. Whole team meeting" style="width:100%;padding:11px 13px;border-radius:10px;border:1px solid rgba(44,39,33,.15);background:#f6f1e9;font-size:13.5px;outline:none;margin-bottom:12px">
+            <div onClick="{{ bookRoom }}" style="text-align:center;padding:12px;border-radius:11px;background:#2c2721;color:#f6f1e9;font-weight:600;font-size:14px">{{ bookBtnLabel }}</div>
+            <sc-if value="{{ isEditingBooking }}" hint-placeholder-val="">
+              <div onClick="{{ cancelEditBooking }}" style="text-align:center;margin-top:9px;font-size:12px;color:#a89a83;font-weight:600">Cancel editing</div>
+            </sc-if>
+          </div>
+          <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:6px 18px 10px">
+            <div style="font:600 15px 'Bricolage Grotesque',sans-serif;padding:12px 0 4px">Today's bookings</div>
+            <sc-if value="{{ noBookings }}" hint-placeholder-val=""><div style="padding:8px 0 14px;color:#a89a83;font-size:13px">Free all day — book it above.</div></sc-if>
+            <sc-for list="{{ bookings }}" as="b" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(44,39,33,.07)">
+                <div style="font:600 13px 'Bricolage Grotesque',sans-serif;width:92px">{{ b.range }}</div>
+                <div style="flex:1"><div style="font-weight:600;font-size:13.5px">{{ b.title }}</div><div style="font-size:11.5px;color:#8a8175">{{ b.by }}</div></div>
+                <sc-if value="{{ b.canEdit }}" hint-placeholder-val="">
+                  <div onClick="{{ b.onEdit }}" style="padding:6px 11px;border-radius:9px;background:#f2ece1;color:#8a6f4a;font-weight:600;font-size:11.5px;margin-right:6px">Edit</div>
+                </sc-if>
+                <div onClick="{{ b.onCancel }}" style="{{ b.cancelStyle }}">{{ b.cancelLabel }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- PEOPLE -->
+      <sc-if value="{{ isPeople }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-if value="{{ canAddPeople }}" hint-placeholder-val="">
+            <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:9px">
+              <div style="font-size:12px;color:#8a8175;font-weight:600">Add a new person</div>
+              <input value="{{ newPersonName }}" onChange="{{ onNewPersonName }}" placeholder="Full name" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(44,39,33,.15);background:#f6f1e9;font-size:13.5px;outline:none">
+              <select value="{{ newPersonOffice }}" onChange="{{ onNewPersonOffice }}" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(44,39,33,.15);background:#f6f1e9;font-size:13.5px;font-weight:600">
+                <sc-for list="{{ officeOpts }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+              <div onClick="{{ addPerson }}" style="text-align:center;padding:11px;border-radius:11px;background:#2c2721;color:#f6f1e9;font-weight:600;font-size:13.5px">Add person</div>
+            </div>
+          </sc-if>
+          <sc-for list="{{ peopleGroups }}" as="group" hint-placeholder-count="3">
+            <div style="background:#fffdf9;border:1px solid rgba(44,39,33,.07);border-radius:16px;padding:14px 16px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><div style="font:600 15px 'Bricolage Grotesque',sans-serif">{{ group.title }}</div><div style="font-size:11.5px;color:#8a8175">{{ group.presentText }}</div></div>
+              <sc-for list="{{ group.members }}" as="p" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:11px;padding:7px 0">
+                  <div style="{{ p.avatarStyle }}">{{ p.initials }}</div>
+                  <div style="flex:1;font-weight:500">{{ p.name }}</div>
+                  <div style="{{ p.statusStyle }}">{{ p.status }}</div>
+                  <sc-if value="{{ p.canRemove }}" hint-placeholder-val="">
+                    <div onClick="{{ p.onRemove }}" style="width:20px;height:20px;border-radius:50%;background:#f3e4dc;color:#b5674a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px">✕</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- CHAT -->
+      <sc-if value="{{ isChat }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:13px">
+          <sc-for list="{{ chat }}" as="msg" hint-placeholder-count="3">
+            <div style="{{ msg.rowStyle }}">
+              <div style="{{ msg.avatarStyle }}">{{ msg.initials }}</div>
+              <div style="{{ msg.colStyle }}">
+                <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+                <div style="{{ msg.metaStyle }}">{{ msg.meta }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ isChat }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:none;position:absolute;left:0;right:0;bottom:66px;padding:10px 14px;background:#efe7da;border-top:1px solid rgba(44,39,33,.09);display:flex;gap:8px">
+        <input value="{{ chatDraft }}" onChange="{{ onChatInput }}" onKeyDown="{{ onChatKey }}" placeholder="Message the team…" style="flex:1;background:#fffdf9;border:1px solid rgba(44,39,33,.14);border-radius:12px;padding:10px 13px;font-size:13px;outline:none">
+        <div onClick="{{ sendChat }}" style="width:42px;flex:none;border-radius:12px;background:#c66a4a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px">↑</div>
+      </div>
+    </sc-if>
+
+    <nav style="flex:none;position:absolute;left:0;right:0;bottom:0;height:66px;background:#efe7da;border-top:1px solid rgba(44,39,33,.09);display:flex;padding:7px 4px 9px">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+        <div onClick="{{ t.onSel }}" style="{{ t.style }}">
+          <span style="{{ t.dotStyle }}"></span>
+          <span style="font-size:9.5px;font-weight:600">{{ t.label }}</span>
+        </div>
+      </sc-for>
+    </nav>
+
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  people = {
+    'Nicola':{i:'NI',c:'#7a9e7e'}, 'Abdoul':{i:'AB',c:'#c98a4a'}, 'Jesugnon':{i:'JE',c:'#8a6fb0'},
+    'Rahmat':{i:'RA',c:'#5a8bb0'}, 'Chabi':{i:'CH',c:'#c46a8a'}, 'Boneface':{i:'BO',c:'#5aa08a'}, 'New DO':{i:'DO',c:'#a0894a'},
+    'Chiara':{i:'CI',c:'#8a6fb0'}, 'Leena':{i:'LE',c:'#5aa08a'}, 'Abdi':{i:'AD',c:'#c98a4a'},
+    'Seyfu':{i:'SE',c:'#5a8bb0'}, 'Sadok':{i:'SA',c:'#c46a8a'}, 'Nelly':{i:'NE',c:'#7a9e7e'}, 'Margaret':{i:'MA',c:'#a0894a'},
+    'Mohammed':{i:'MO',c:'#5a8bb0'}, 'Melaine':{i:'ME',c:'#c46a8a'}, 'Sarah':{i:'SR',c:'#8a6fb0'},
+    'Diana':{i:'DI',c:'#5aa08a'}, 'Ahmed':{i:'AH',c:'#c98a4a'}, 'AO ABC':{i:'AO',c:'#a0894a'},
+    'Endalamaw':{i:'EN',c:'#6a8ab0'}, 'Rafiq':{i:'RF',c:'#b0794a'}
+  };
+  roster = {
+    'Office 1':['Nicola','Abdoul','Jesugnon','Rahmat','Chabi','Boneface','New DO'],
+    'Office 2':['Chiara','Leena','Abdi','Seyfu','Sadok','Nelly','Margaret'],
+    'Office 3':['Mohammed','Melaine','Sarah','Diana','Ahmed','AO ABC','Endalamaw','Rafiq']
+  };
+  DAYS = ['Mon','Tue','Wed','Thu','Fri'];
+  ADMINS = ['Margaret','Seyfu'];
+  state = {
+    currentUser:null, view:'home', chatDraft:'', flash:'',
+    weekDays:{Mon:'In',Tue:'In',Wed:'Remote',Thu:'In',Fri:'Off'}, weekNote:'',
+    newStart:'10:00', newEnd:'11:00', newTitle:'', editingBookingKey:null,
+    pendingName:null, passwordInput:'',
+    offices:[
+      {name:'Office 1', side:'left',   seats:[null,null,null,null,null]},
+      {name:'Office 2', side:'middle', seats:[null,null,null,null,null]},
+      {name:'Office 3', side:'right',  seats:[null,null,null,null,null]}
+    ],
+    bookings:[],
+    facilities:[],
+    chat:[],
+    plans:[],
+    extraPeople:[], newPersonName:'', newPersonOffice:'Office 1', removedPeople:{}
+  };
+  get ME(){ return this.state.currentUser; }
+  get isAdmin(){ return this.ADMINS.includes(this.ME); }
+  currentTimeStr(){ const sd=new Date(Date.now()+3*3600*1000); return `${String(sd.getUTCHours()).padStart(2,'0')}:${String(sd.getUTCMinutes()).padStart(2,'0')}`; }
+
+  nairobiParts(d){
+    const sd=new Date(d.getTime()+3*3600*1000);
+    return {y:sd.getUTCFullYear(), mo:sd.getUTCMonth(), da:sd.getUTCDate(), wd:sd.getUTCDay(), hr:sd.getUTCHours()};
+  }
+  fmtYMD(y,mo,da){ return `${y}-${String(mo+1).padStart(2,'0')}-${String(da).padStart(2,'0')}`; }
+  weekKeySimple(d){
+    const p=this.nairobiParts(d);
+    const day=new Date(Date.UTC(p.y,p.mo,p.da));
+    const sinceMonday=(p.wd+6)%7;
+    const monday=new Date(day); monday.setUTCDate(monday.getUTCDate()-sinceMonday);
+    return this.fmtYMD(monday.getUTCFullYear(), monday.getUTCMonth(), monday.getUTCDate());
+  }
+  todayAbbrev(){ const p=this.nairobiParts(new Date()); return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][p.wd]; }
+  entryName(entry){ if(!entry) return null; return typeof entry==='string'?entry:entry.name; }
+  entryDays(entry){ if(!entry) return ['Mon','Tue','Wed','Thu','Fri']; return typeof entry==='string'?['Mon','Tue','Wed','Thu','Fri']:(entry.days||['Mon','Tue','Wed','Thu','Fri']); }
+  entryValid(entry,curWeek){ const name=this.entryName(entry); if(!name) return false; const week=typeof entry==='string'?null:entry.week; return week===null||week===undefined||week===curWeek; }
+  myPlanInDays(){
+    const cur=this.weekCycleKey(new Date());
+    const plan=this.state.plans.find(p=>p.who===this.ME && p.scope==='weekly' && p.ts && this.weekCycleKey(new Date(p.ts))===cur);
+    if(!plan || !plan.days) return null;
+    return this.DAYS.filter(d=>plan.days[d]==='In');
+  }
+  hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
+  personInfo(name){
+    if(this.people[name]) return this.people[name];
+    const palette=['#7a9e7e','#c98a4a','#8a6fb0','#5a8bb0','#c46a8a','#5aa08a','#a0894a','#6a8ab0','#b0794a'];
+    const initials=(name||'').trim().split(/\s+/).map(w=>w[0]||'').join('').slice(0,2).toUpperCase()||'?';
+    return {i:initials, c:palette[this.hashStr(name||'')%palette.length]};
+  }
+  isRemoved(name){ return !!(this.state.removedPeople||{})[this.slug(name)]; }
+  rosterCombined(){
+    const out={}; Object.keys(this.roster).forEach(k=>out[k]=[...this.roster[k]].filter(n=>!this.isRemoved(n)));
+    (this.state.extraPeople||[]).forEach(p=>{ if(this.isRemoved(p.name)) return; if(!out[p.office]) out[p.office]=[]; if(!out[p.office].includes(p.name)) out[p.office].push(p.name); });
+    return out;
+  }
+  allPeopleNames(){
+    const names=Object.keys(this.people).filter(n=>!this.isRemoved(n));
+    (this.state.extraPeople||[]).forEach(p=>{ if(!this.isRemoved(p.name) && !names.includes(p.name)) names.push(p.name); });
+    return names;
+  }
+  removePerson(name){
+    if(!this.db) return;
+    this.db.ref('removedPeople/'+this.slug(name)).set(true);
+    this.flashMsg(`${name} removed`);
+  }
+  addPerson(){
+    if(!this.db) return;
+    const name=(this.state.newPersonName||'').trim(); if(!name) return;
+    if(this.allPeopleNames().includes(name)){ this.flashMsg('That person already exists'); return; }
+    this.db.ref('extraPeople').push({name, office:this.state.newPersonOffice||'Office 1', ts:Date.now()});
+    this.setState({newPersonName:''}); this.flashMsg(`${name} added ✓`);
+  }
+  weekCycleKey(d){
+    const p=this.nairobiParts(d);
+    const day=new Date(Date.UTC(p.y,p.mo,p.da));
+    const pastCutoff = (p.wd===5 && p.hr>=17) || p.wd===6 || p.wd===0;
+    const sinceMonday=(p.wd+6)%7;
+    const monday=new Date(day); monday.setUTCDate(monday.getUTCDate()-sinceMonday);
+    if(pastCutoff) monday.setUTCDate(monday.getUTCDate()+7);
+    return this.fmtYMD(monday.getUTCFullYear(), monday.getUTCMonth(), monday.getUTCDate());
+  }
+
+  adminClearDesk(oi,di){ if(!this.db) return; this.db.ref('seats/'+oi+'-'+di).remove(); this.flashMsg('Desk cleared'); }
+  resolveFacility(key){ if(this.db) this.db.ref('facilities/'+key).remove(); this.flashMsg('Marked resolved'); }
+
+  FB = {
+    apiKey: "AIzaSyB6Yag7P6HrR3HSgp07QCQUx18MEm3BM1M",
+    authDomain: "i-love-my-office.firebaseapp.com",
+    databaseURL: "https://i-love-my-office-default-rtdb.firebaseio.com",
+    projectId: "i-love-my-office",
+    storageBucket: "i-love-my-office.firebasestorage.app",
+    messagingSenderId: "862340871378",
+    appId: "1:862340871378:web:b411247d15fa9808e3a90b"
+  };
+  TEAM_PASSWORD = 'Perfect Day';
+  ADMIN_PASSWORD = 'Falcon-Harbor-73';
+  slug(name){ return name.toLowerCase().replace(/[^a-z0-9]+/g,''); }
+  emailFor(name){ return this.slug(name)+'@ilmoapp.local'; }
+  passwordFor(name){ return this.ADMINS.includes(name) ? this.ADMIN_PASSWORD : this.TEAM_PASSWORD; }
+
+  componentDidMount(){
+    try{ this._storedUser = localStorage.getItem('ilmo_user'); }catch(e){}
+    const start=()=>{ if(window.firebase && firebase.database && firebase.auth){ this.initFb(); } else { setTimeout(start,60); } };
+    start();
+    this._tick = setInterval(()=>this.forceUpdate(), 60000);
+  }
+  componentWillUnmount(){ clearInterval(this._tick); }
+  initFb(){
+    try{ if(!window._ilmoApp) window._ilmoApp=firebase.initializeApp(this.FB); this.db=firebase.database(window._ilmoApp); this.auth=firebase.auth(window._ilmoApp); }catch(e){ console.warn('Firebase init failed',e); return; }
+    this.db.ref('seats').on('value', s=>{ const m=s.val()||{}; const offices=this.state.offices.map((o,oi)=>({...o, seats:[0,1,2,3,4].map(di=>m[oi+'-'+di]!==undefined?m[oi+'-'+di]:null)})); this.setState({offices}); });
+    this.db.ref('bookings').on('value', s=>{ const v=s.val()||{}; const bookings=Object.keys(v).map(k=>({...v[k],key:k})).sort((a,c)=>a.start.localeCompare(c.start)); this.setState({bookings}); });
+    this.db.ref('plans').on('value', s=>{ const v=s.val()||{}; const plans=Object.keys(v).map(k=>({...v[k],key:k})).sort((a,c)=>(c.ts||0)-(a.ts||0)); this.setState({plans}); });
+    this.db.ref('chat').on('value', s=>{ const v=s.val()||{}; const chat=Object.keys(v).map(k=>({...v[k],key:k})).sort((a,c)=>(a.ts||0)-(c.ts||0)); this.setState({chat}); });
+    this.db.ref('facilities').on('value', s=>{ const v=s.val()||{}; const facilities=Object.keys(v).map(k=>({...v[k],key:k})).sort((a,c)=>(c.ts||0)-(a.ts||0)); this.setState({facilities}); });
+    this.db.ref('extraPeople').on('value', s=>{ const v=s.val()||{}; const extraPeople=Object.keys(v).map(k=>({...v[k], key:k})); this.setState({extraPeople}); });
+    this.db.ref('removedPeople').on('value', s=>{ this.setState({removedPeople:s.val()||{}}); });
+    if(this._storedUser){ this.authFor(this._storedUser).then(ok=>{ if(ok) this.setState({currentUser:this._storedUser}); }); }
+  }
+  flashMsg(m){ this.setState({flash:m}); clearTimeout(this._ft); this._ft=setTimeout(()=>this.setState({flash:''}),2400); }
+
+  async authFor(name){
+    if(!this.auth) return false;
+    const email=this.emailFor(name), pass=this.passwordFor(name);
+    try{ await this.auth.signInWithEmailAndPassword(email, pass); return true; }
+    catch(err){
+      try{ await this.auth.createUserWithEmailAndPassword(email, pass); return true; }
+      catch(err2){
+        if(err2.code==='auth/email-already-in-use'){ this.flashMsg('Sign-in failed — contact admin'); console.warn(err); return false; }
+        this.flashMsg('Sign-in failed'); console.warn(err2); return false;
+      }
+    }
+  }
+  selectPendingName(name){ this.setState({pendingName:name, passwordInput:'', loginError:''}); }
+  cancelPending(){ this.setState({pendingName:null, passwordInput:'', loginError:''}); }
+  submitLogin(){
+    const name=this.state.pendingName; if(!name) return;
+    if(!this.state.passwordInput){ this.setState({loginError:'Enter your password'}); return; }
+    if(this.state.passwordInput !== this.passwordFor(name)){ this.setState({loginError:'Incorrect password', passwordInput:''}); return; }
+    this.setState({loginError:''});
+    this.authFor(name).then(ok=>{
+      if(ok){ this.setState({currentUser:name, view:'home', pendingName:null, passwordInput:''}); try{ localStorage.setItem('ilmo_user', name); }catch(e){} }
+    });
+  }
+  signIn(name){
+    this.authFor(name).then(ok=>{
+      if(ok){ this.setState({currentUser:name, view:'home'}); try{ localStorage.setItem('ilmo_user', name); }catch(e){} }
+    });
+  }
+  signOut(){ this.setState({currentUser:null}); try{ localStorage.removeItem('ilmo_user'); }catch(e){} if(this.auth) this.auth.signOut(); }
+  go(v){ this.setState({view:v}); }
+
+  bookDesk(oi,di){
+    if(!this.db) return; const me=this.ME, key=oi+'-'+di;
+    const wk=this.weekKeySimple(new Date());
+    const inDays=this.myPlanInDays();
+    const days=(inDays && inDays.length) ? inDays : ['Mon','Tue','Wed','Thu','Fri'];
+    this.db.ref('seats').transaction(m=>{
+      m=m||{};
+      Object.keys(m).forEach(k=>{ if(this.entryName(m[k])===me) delete m[k]; });
+      const existing=m[key];
+      if(this.entryValid(existing,wk) && this.entryName(existing)!==me) return;
+      m[key] = { name: me, days, week: wk };
+      return m;
+    }, (err,committed)=>{ if(!err && !committed) this.flashMsg('That desk was just taken'); });
+  }
+  releaseDesk(){ if(!this.db) return; const me=this.ME; this.db.ref('seats').transaction(m=>{ if(!m) return m; Object.keys(m).forEach(k=>{ if(this.entryName(m[k])===me) delete m[k]; }); return m; }); }
+  syncMyDeskDays(){
+    if(!this.db) return; const me=this.ME;
+    const inDays=this.DAYS.filter(d=>this.state.weekDays[d]==='In');
+    const days=inDays.length?inDays:['Mon','Tue','Wed','Thu','Fri'];
+    const wk=this.weekKeySimple(new Date());
+    this.db.ref('seats').transaction(m=>{
+      if(!m) return m;
+      Object.keys(m).forEach(k=>{ if(this.entryName(m[k])===me){ m[k]={name:me, days, week:wk}; } });
+      return m;
+    });
+  }
+
+  genTimes(){ const t=[]; for(let h=8;h<=18;h++){ t.push(`${String(h).padStart(2,'0')}:00`); if(h<18)t.push(`${String(h).padStart(2,'0')}:30`);} return t; }
+  bookRoom(){
+    if(!this.db) return; const {newStart,newEnd,newTitle,editingBookingKey}=this.state;
+    if(!newTitle.trim()){this.flashMsg('Add a purpose');return;}
+    if(newEnd<=newStart){this.flashMsg('End must be after start');return;}
+    if(newStart < this.currentTimeStr()){ this.flashMsg('Pick a time that hasn\u2019t passed yet'); return; }
+    const overlaps=this.state.bookings.some(b=>b.key!==editingBookingKey && newStart<b.end && newEnd>b.start);
+    if(overlaps){this.flashMsg('That time overlaps an existing booking');return;}
+    if(editingBookingKey){ this.db.ref('bookings/'+editingBookingKey).update({start:newStart,end:newEnd,title:newTitle.trim(),by:this.ME,ts:Date.now()}); this.setState({newTitle:'',editingBookingKey:null}); this.flashMsg('Booking updated ✓'); }
+    else { this.db.ref('bookings').push({start:newStart,end:newEnd,title:newTitle.trim(),by:this.ME,ts:Date.now()}); this.setState({newTitle:''}); this.flashMsg('Room booked ✓'); }
+  }
+  editBooking(b){ this.setState({newStart:b.start, newEnd:b.end, newTitle:b.title, editingBookingKey:b.key}); this.flashMsg('Editing booking — adjust and Save'); }
+  cancelEditBooking(){ this.setState({editingBookingKey:null, newTitle:'', newStart:'10:00', newEnd:'11:00'}); }
+  cancelBooking(key){ if(this.db) this.db.ref('bookings/'+key).remove(); this.flashMsg('Booking cancelled'); }
+
+  submitPlan(){
+    if(!this.db) return; const u=this.ME;
+    const wd=this.state.weekDays; const g=(v)=>this.DAYS.filter(d=>wd[d]===v).join(', ')||'—';
+    const note=this.state.weekNote.trim();
+    const entry={who:u,when:'Just now',scope:'weekly',ts:Date.now(),days:{...wd},note,line1:this.WL,line2:`In: ${g('In')} · Remote: ${g('Remote')} · Off: ${g('Off')}`+(note?` · ${note}`:'')};
+    const cur=this.weekCycleKey(new Date());
+    const key=`${cur}_${this.slug(u)}`;
+    const isUpdate = this.state.plans.some(p=>p.who===u && p.scope==='weekly' && p.ts && this.weekCycleKey(new Date(p.ts))===cur);
+    this.db.ref('plans/'+key).set(entry);
+    this.flashMsg(isUpdate?'Plan updated ✓':'Plan submitted ✓');
+    this.syncMyDeskDays();
+  }
+  editPlan(entry){
+    const wd = entry.days ? {...entry.days} : {Mon:'In',Tue:'In',Wed:'In',Thu:'In',Fri:'In'};
+    this.setState({weekDays:wd, weekNote:entry.note||'', view:'plan'});
+    this.flashMsg('Editing your plan — make changes and Submit');
+  }
+
+  sendChat(){ if(!this.db) return; const t=(this.state.chatDraft||'').trim(); if(!t)return; this.db.ref('chat').push({name:this.ME,text:t,time:'now',ts:Date.now()}); this.setState({chatDraft:''}); }
+
+  myDesk(){
+    const wk=this.weekKeySimple(new Date());
+    for(let oi=0;oi<this.state.offices.length;oi++){
+      const seats=this.state.offices[oi].seats;
+      for(let di=0;di<seats.length;di++){
+        const entry=seats[di];
+        if(this.entryValid(entry,wk) && this.entryName(entry)===this.ME){ return {oi,di,office:this.state.offices[oi], days:this.entryDays(entry)}; }
+      }
+    }
+    return null;
+  }
+  freeCount(){
+    const wk=this.weekKeySimple(new Date()); const today=this.todayAbbrev();
+    let n=0;
+    this.state.offices.forEach(o=>o.seats.forEach(entry=>{
+      const valid=this.entryValid(entry,wk);
+      if(!valid || !this.entryDays(entry).includes(today)) n++;
+    }));
+    return n;
+  }
+
+  buildOffices(mode){
+    const admin=this.isAdmin;
+    const wk=this.weekKeySimple(new Date());
+    const today=this.todayAbbrev();
+    return this.state.offices.map((o,oi)=>{
+      const desks=o.seats.map((entry,di)=>{
+        const valid=this.entryValid(entry,wk);
+        const name=valid?this.entryName(entry):null;
+        const days=valid?this.entryDays(entry):[];
+        const isMine=valid && name===this.ME;
+        const inToday=valid && days.includes(today);
+        const isFreeToday=!valid || !inToday;
+        const p=name?this.personInfo(name):null;
+        let bg,fg; if(isMine){bg='#c66a4a';fg='#fff';}else if(isFreeToday){bg='#dcecd8';fg='#5f8560';}else{bg='#e8dbd2';fg='#9a6650';}
+        const span=di===4?'grid-column:1 / -1;justify-self:center;width:calc(50% - 5px);':'';
+        const canClear=admin&&valid&&!isMine; const clickable=!valid||canClear;
+        const daysShort=days.length===5?'all week':days.join(',');
+        if(mode==='mini')return {style:`${span}aspect-ratio:1;border-radius:8px;background:${bg};color:${fg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:${clickable?'pointer':'default'}`,label:!valid?'':(inToday?p.i:''),onSel:!valid?()=>this.bookDesk(oi,di):(canClear?()=>this.adminClearDesk(oi,di):()=>{})};
+        return {num:di+1,style:`${span}display:flex;flex-direction:column;gap:2px;min-height:54px;justify-content:center;border-radius:12px;padding:9px 11px;background:${bg};color:${fg};cursor:${clickable?'pointer':'default'}`,label:!valid?'Free · tap':(isMine?`You · ${daysShort}`:(canClear?`${name} · clear`:`${name} · ${daysShort}`)),onSel:!valid?()=>this.bookDesk(oi,di):(canClear?()=>this.adminClearDesk(oi,di):()=>{})};
+      });
+      const freeToday=o.seats.filter(entry=>{ const valid=this.entryValid(entry,wk); return !valid || !this.entryDays(entry).includes(today); }).length;
+      return {title:`${o.name} · ${o.side}`,freeText:`${freeToday} free today`,desks};
+    });
+  }
+
+  seg(active,label,onSel,small){ return {label,onSel,style:`flex:1;text-align:center;padding:${small?'6px 4px':'9px 8px'};border-radius:9px;font-weight:600;font-size:${small?'11px':'12.5px'};${active?'background:#c66a4a;color:#fff':'color:#8a7f6f'}`}; }
+
+  renderVals(){
+    this.PD='Tue, Jul 8'; this.WL='Week of Jul 7';
+    const signedIn=!!this.state.currentUser; const view=this.state.view; const me=this.ME;
+    const mep=signedIn?this.personInfo(me):{i:'',c:'#7a9e7e'};
+
+    const loginPeople=this.allPeopleNames().map(name=>{ const p=this.personInfo(name); return {name,initials:p.i,onSel:()=>this.selectPendingName(name),avatarStyle:`width:40px;height:40px;border-radius:50%;background:${p.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px`}; });
+    if(!signedIn){
+      const pn=this.state.pendingName; const pp=pn?this.personInfo(pn):null;
+      return {notSignedIn:true, signedIn:false, loginPeople, flash:this.state.flash,
+        noPendingName:!pn, hasPendingName:!!pn, pendingName:pn||'',
+        pendingInitials:pp?pp.i:'', pendingAvatarStyle:pp?`width:52px;height:52px;border-radius:50%;background:${pp.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px`:'',
+        passwordInput:this.state.passwordInput, loginError:this.state.loginError||'',
+        onPasswordInput:(e)=>this.setState({passwordInput:e.target.value}),
+        onPasswordKey:(e)=>{ if(e.key==='Enter') this.submitLogin(); },
+        submitLogin:()=>this.submitLogin(), cancelPending:()=>this.cancelPending()
+      };
+    }
+
+    const md=this.myDesk(); const free=this.freeCount();
+    const titles={home:`Hi, ${me}`, plan:'My plan', desks:'Book a desk', room:'Meeting room', people:'People', chat:'Team chat'};
+    const tabDefs=[{key:'home',label:'Home'},{key:'plan',label:'Plan'},{key:'desks',label:'Desks'},{key:'room',label:'Room'},{key:'people',label:'Team'},{key:'chat',label:'Chat'}];
+    const tabs=tabDefs.map(t=>{ const a=view===t.key; return {label:t.label,onSel:()=>this.go(t.key),style:`flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:12px;color:${a?'#c66a4a':'#a89a83'}`,dotStyle:`width:8px;height:8px;border-radius:50%;background:${a?'#c66a4a':'#c9bfae'}`}; });
+
+    const now=this.currentTimeStr(); const busyNow=this.state.bookings.some(b=>now>=b.start && now<b.end);
+    const bookings=this.state.bookings.slice().sort((a,c)=>a.start.localeCompare(c.start)).map(b=>{ const mine=b.by===this.ME; const can=mine||this.isAdmin; return {range:`${b.start}–${b.end}`,title:b.title,by:mine?`${b.by} (you)`:b.by,cancelLabel:can?(mine?'Cancel':'Cancel (admin)'):'Booked',cancelStyle:can?'padding:6px 12px;border-radius:9px;background:#f3e4dc;color:#b5674a;font-weight:600;font-size:11.5px':'padding:6px 12px;border-radius:9px;background:#eee8dd;color:#a89a83;font-weight:600;font-size:11.5px',onCancel:can?()=>this.cancelBooking(b.key):()=>{}, canEdit:mine, onEdit:mine?()=>this.editBooking(b):()=>{}}; });
+
+    const weekRows=this.DAYS.map(d=>({day:d,seg:['In','Remote','Off'].map(v=>this.seg(this.state.weekDays[d]===v,v,()=>{const wd={...this.state.weekDays,[d]:v};this.setState({weekDays:wd});},true))}));
+    const plansList=this.state.plans.map(p=>{ const pp=this.personInfo(p.who); const canEdit=p.who===me;
+      return {...p,scopeLabel:'Weekly',initials:pp.i,canEdit,onEdit:canEdit?()=>this.editPlan(p):()=>{},
+        avatarStyle:`width:32px;height:32px;flex:none;border-radius:50%;background:${pp.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px`}; });
+    const currentWeekCycle=this.weekCycleKey(new Date());
+    const myWeekPlan=this.state.plans.find(p=>p.who===me && p.scope==='weekly' && p.ts && this.weekCycleKey(new Date(p.ts))===currentWeekCycle);
+
+    const wk0=this.weekKeySimple(new Date()); const today0=this.todayAbbrev();
+    const seated=new Set(); this.state.offices.forEach(o=>o.seats.forEach(entry=>{
+      if(this.entryValid(entry,wk0) && this.entryDays(entry).includes(today0)) seated.add(this.entryName(entry));
+    }));
+    const rc=this.rosterCombined();
+    const peopleGroups=Object.keys(rc).map(name=>{ const members=rc[name].map(pn=>{ const p=this.personInfo(pn); const inNow=seated.has(pn); return {name:pn,initials:p.i,avatarStyle:`width:32px;height:32px;flex:none;border-radius:50%;background:${p.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px`,status:inNow?'In':'Away',statusStyle:`padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;${inNow?'background:#eaf1e7;color:#4f7a53':'background:#eee8dd;color:#a89a83'}`,
+      canRemove:this.isAdmin && pn!==this.ME, onRemove:()=>this.removePerson(pn)}; }); const nIn=members.filter(m=>m.status==='In').length; return {title:name,presentText:`${nIn}/${members.length} in`,members}; });
+
+    const chat=this.state.chat.map(m=>{ const p=this.personInfo(m.name); const mine=m.name===me; return {initials:p.i,text:m.text,meta:`${m.name} · ${m.time}`,rowStyle:`display:flex;gap:9px;align-items:flex-start;${mine?'flex-direction:row-reverse':''}`,avatarStyle:`width:28px;height:28px;flex:none;border-radius:50%;background:${p.c};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700`,colStyle:`min-width:0;${mine?'text-align:right':''}`,bubbleStyle:`display:inline-block;text-align:left;max-width:230px;padding:9px 12px;font-size:13px;line-height:1.4;${mine?'background:#c66a4a;color:#fff;border-radius:13px 4px 13px 13px':'background:#fffdf9;border-radius:4px 13px 13px 13px'}`,metaStyle:'font-size:10.5px;color:#a89a83;margin-top:3px'}; });
+
+    let nearbyText='Tap a free desk to book.';
+    if(md){
+      const mates=md.office.seats.map(entry=>{
+        if(!this.entryValid(entry,wk0)) return null;
+        if(!this.entryDays(entry).includes(today0)) return null;
+        const n=this.entryName(entry); return (n&&n!==me)?n:null;
+      }).filter(Boolean);
+      nearbyText = mates.length? `${mates.slice(0,2).join(', ')}${mates.length>2?' +more':''} are in with you today` : 'You have the room to yourself today';
+    }
+
+    return {
+      notSignedIn:false, signedIn:true, loginPeople, flash:this.state.flash,
+      meInitials:mep.i, meAvatarStyle:`width:38px;height:38px;border-radius:50%;background:${mep.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px`,
+      signOut:()=>this.signOut(), isAdmin:this.isAdmin,
+      dateStr:'Tue · July 8', pageTitle:titles[view]||'',
+      isHome:view==='home', isPlan:view==='plan', isDesks:view==='desks', isRoom:view==='room', isPeople:view==='people', isChat:view==='chat',
+      tabs,
+      heroKicker: md?(md.days.includes(today0)?"You're all set for today":'Booked this week, but not today'):'No desk booked yet',
+      myDeskLabel: md?`Desk ${md.di+1} · ${md.office.name} · ${md.days.length===5?'all week':md.days.join(', ')}`:'Tap a free desk to book',
+      nearbyText,
+      checkBadgeStyle: (md&&md.days.includes(today0))?'padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.9);color:#4f7a53;font-weight:700;font-size:12.5px':'padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.28);color:#fff;font-weight:600;font-size:12.5px',
+      checkBadgeLabel: (md&&md.days.includes(today0))?'✓ Checked in':(md?'Not in today':'Not in yet'),
+      freeLabel:`${free}/15 free today`,
+      roomStatusStyle: busyNow?'padding:5px 12px;border-radius:9px;background:#f3e4dc;color:#b5674a;font-weight:600;font-size:12px':'padding:5px 12px;border-radius:9px;background:#eaf1e7;color:#4f7a53;font-weight:600;font-size:12px',
+      roomStatusLabel: busyNow?'Busy':'Free now', roomCountLabel:`${this.state.bookings.length} booked today`,
+      planHint: myWeekPlan?myWeekPlan.line1:'Tell us which days you\u2019ll be in this week.',
+      homeOffices:this.buildOffices('mini'), deskOffices:this.buildOffices('full'),
+      bookings, noBookings:this.state.bookings.length===0, timeOpts:this.genTimes(),
+      newStart:this.state.newStart, newEnd:this.state.newEnd, newTitle:this.state.newTitle,
+      onStartChange:(e)=>this.setState({newStart:e.target.value}), onEndChange:(e)=>this.setState({newEnd:e.target.value}), onTitleChange:(e)=>this.setState({newTitle:e.target.value}), bookRoom:()=>this.bookRoom(),
+      isEditingBooking:!!this.state.editingBookingKey, bookBtnLabel:this.state.editingBookingKey?'Save changes':'Book room', cancelEditBooking:()=>this.cancelEditBooking(),
+      weekLabel:this.WL, weekRows,
+      weekSubmittedLabel: myWeekPlan?'Done ✓':'Not yet',
+      weekSubmittedStyle: myWeekPlan?'padding:3px 11px;border-radius:20px;background:#eaf1e7;color:#4f7a53;font-size:11.5px;font-weight:600':'padding:3px 11px;border-radius:20px;background:#f3e4dc;color:#b5674a;font-size:11.5px;font-weight:600',
+      weekNote:this.state.weekNote,
+      onWeekNote:(e)=>this.setState({weekNote:e.target.value}), submitPlan:()=>this.submitPlan(),
+      plansList, noPlans:this.state.plans.length===0,
+      peopleGroups, chat, chatDraft:this.state.chatDraft,
+      canAddPeople:this.isAdmin,
+      newPersonName:this.state.newPersonName, newPersonOffice:this.state.newPersonOffice,
+      officeOpts:Object.keys(this.roster),
+      onNewPersonName:(e)=>this.setState({newPersonName:e.target.value}),
+      onNewPersonOffice:(e)=>this.setState({newPersonOffice:e.target.value}),
+      addPerson:()=>this.addPerson(),
+      goPlan:()=>this.go('plan'), goRoom:()=>this.go('room'), releaseDesk:()=>this.releaseDesk(), sendChat:()=>this.sendChat(),
+      onChatInput:(e)=>this.setState({chatDraft:e.target.value}), onChatKey:(e)=>{if(e.key==='Enter')this.sendChat();}
+    };
+  }
+}
+</script>
+</body>
+</html>
