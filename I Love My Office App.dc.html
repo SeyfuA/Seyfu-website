@@ -505,6 +505,28 @@ class Component extends DCLogic {
     if(!plan || !plan.days) return null;
     return this.DAYS.filter(d=>plan.days[d]==='In');
   }
+  relTime(ts){
+    if(!ts) return '';
+    const diffMs=Date.now()-ts;
+    const min=Math.floor(diffMs/60000);
+    if(min<1) return 'Just now';
+    if(min<60) return `${min}m ago`;
+    const hr=Math.floor(min/60);
+    if(hr<24) return `${hr}h ago`;
+    const p=this.nairobiParts(new Date(ts));
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `${months[p.mo]} ${p.da}`;
+  }
+  currentWeekLabel(){
+    const p=this.nairobiParts(new Date());
+    const day=new Date(Date.UTC(p.y,p.mo,p.da));
+    const pastCutoff=(p.wd===5 && p.hr>=17) || p.wd===6 || p.wd===0;
+    const sinceMonday=(p.wd+6)%7;
+    const monday=new Date(day); monday.setUTCDate(monday.getUTCDate()-sinceMonday);
+    if(pastCutoff) monday.setUTCDate(monday.getUTCDate()+7);
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `Week of ${months[monday.getUTCMonth()]} ${monday.getUTCDate()} · 5 days`;
+  }
   weekCycleKey(d){
     const p=this.nairobiParts(d);
     const day=new Date(Date.UTC(p.y,p.mo,p.da));
@@ -829,7 +851,7 @@ class Component extends DCLogic {
   seg(active,label,onSel,small){ return {label, onSel, style:`flex:1;text-align:center;padding:${small?'6px 6px':'9px 10px'};border-radius:9px;cursor:pointer;font-weight:600;font-size:${small?'11.5px':'12.5px'};${active?'background:#c66a4a;color:#fff':'color:#8a7f6f'}`}; }
 
   renderVals(){
-    this.WEEK_LABEL = 'Week of Jul 7 · 5 days';
+    this.WEEK_LABEL = this.currentWeekLabel();
     const signedIn = !!this.state.currentUser;
     const view = this.state.view;
     const me = this.ME;
@@ -877,14 +899,14 @@ class Component extends DCLogic {
     // plan segmented controls
     const weekRows=this.DAYS.map(d=>({day:d, seg:['In','Remote','Off'].map(v=>this.seg(this.state.weekDays[d]===v,v,()=>{ const wd={...this.state.weekDays,[d]:v}; this.setState({weekDays:wd}); },true))}));
     const plansList=this.state.plans.map(p=>{ const pp=this.personInfo(p.who); const canEdit=p.who===me;
-      return {...p, scopeLabel:'Weekly', initials:pp.i, canEdit, onEdit:canEdit?()=>this.editPlan(p):()=>{},
+      return {...p, scopeLabel:'Weekly', initials:pp.i, canEdit, when:this.relTime(p.ts), onEdit:canEdit?()=>this.editPlan(p):()=>{},
         avatarStyle:`width:34px;height:34px;flex:none;border-radius:50%;background:${pp.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px`}; });
     const currentWeekCycle=this.weekCycleKey(new Date());
     const myWeekPlan=this.state.plans.find(p=>p.who===me && p.scope==='weekly' && p.ts && this.weekCycleKey(new Date(p.ts))===currentWeekCycle);
 
     // facilities
     const facilities=this.state.facilities.map(f=>{ const col=f.pri==='High'?'#c66a4a':'#d9a441'; const pc=f.pri==='High'?'background:#f3e4dc;color:#b5674a':'background:#f6edda;color:#b58a3d';
-      return {text:f.text, meta:`${f.by} · ${f.ago}`, pri:f.pri, dotStyle:`width:8px;height:8px;flex:none;border-radius:50%;background:${col}`, priStyle:`padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;${pc}`,
+      return {text:f.text, meta:`${f.by} · ${this.relTime(f.ts)}`, pri:f.pri, dotStyle:`width:8px;height:8px;flex:none;border-radius:50%;background:${col}`, priStyle:`padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;${pc}`,
         showResolve:this.isAdmin, onResolve:f.key?()=>this.resolveFacility(f.key):()=>{}}; });
 
     // people
@@ -900,7 +922,7 @@ class Component extends DCLogic {
 
     // chat
     const chat=this.state.chat.map(m=>{ const p=this.personInfo(m.name); const mine=m.name===me;
-      return {initials:p.i, text:m.text, meta:`${m.name} · ${m.time}`,
+      return {initials:p.i, text:m.text, meta:`${m.name} · ${this.relTime(m.ts)}`,
         rowStyle:`display:flex;gap:9px;align-items:flex-start;${mine?'flex-direction:row-reverse':''}`,
         avatarStyle:`width:28px;height:28px;flex:none;border-radius:50%;background:${p.c};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700`,
         colStyle:`min-width:0;${mine?'text-align:right':''}`,
