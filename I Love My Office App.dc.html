@@ -517,6 +517,12 @@ class Component extends DCLogic {
     const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     return `${months[p.mo]} ${p.da}`;
   }
+  currentDateStr(){
+    const p=this.nairobiParts(new Date());
+    const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return `${days[p.wd]} · ${months[p.mo]} ${p.da}`;
+  }
   currentWeekLabel(){
     const p=this.nairobiParts(new Date());
     const day=new Date(Date.UTC(p.y,p.mo,p.da));
@@ -958,7 +964,7 @@ class Component extends DCLogic {
       meName:me, meInitials:mep.i, meOffice:`${this.myOffice()} · staff`,
       meAvatarStyle:`width:34px;height:34px;flex:none;border-radius:50%;background:${mep.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px`,
       signOut:()=>this.signOut(), isAdmin:this.isAdmin,
-      dateStr:'Tuesday · July 8', pageTitle:titles[view]||'',
+      dateStr:this.currentDateStr(), pageTitle:titles[view]||'',
       isHome:view==='home', isPlan:view==='plan', isDesks:view==='desks', isRoom:view==='room', isPeople:view==='people', isFacilities:view==='facilities',
       nav,
       // hero
