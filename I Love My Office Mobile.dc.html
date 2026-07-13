@@ -339,6 +339,34 @@ class Component extends DCLogic {
     return this.fmtYMD(monday.getUTCFullYear(), monday.getUTCMonth(), monday.getUTCDate());
   }
   todayAbbrev(){ const p=this.nairobiParts(new Date()); return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][p.wd]; }
+  relTime(ts){
+    if(!ts) return '';
+    const diffMs=Date.now()-ts;
+    const min=Math.floor(diffMs/60000);
+    if(min<1) return 'Just now';
+    if(min<60) return `${min}m ago`;
+    const hr=Math.floor(min/60);
+    if(hr<24) return `${hr}h ago`;
+    const p=this.nairobiParts(new Date(ts));
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `${months[p.mo]} ${p.da}`;
+  }
+  currentDateStr(){
+    const p=this.nairobiParts(new Date());
+    const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `${days[p.wd]} · ${months[p.mo]} ${p.da}`;
+  }
+  currentWeekLabel(){
+    const p=this.nairobiParts(new Date());
+    const day=new Date(Date.UTC(p.y,p.mo,p.da));
+    const pastCutoff=(p.wd===5 && p.hr>=17) || p.wd===6 || p.wd===0;
+    const sinceMonday=(p.wd+6)%7;
+    const monday=new Date(day); monday.setUTCDate(monday.getUTCDate()-sinceMonday);
+    if(pastCutoff) monday.setUTCDate(monday.getUTCDate()+7);
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `Week of ${months[monday.getUTCMonth()]} ${monday.getUTCDate()}`;
+  }
   entryName(entry){ if(!entry) return null; return typeof entry==='string'?entry:entry.name; }
   entryDays(entry){ if(!entry) return ['Mon','Tue','Wed','Thu','Fri']; return typeof entry==='string'?['Mon','Tue','Wed','Thu','Fri']:(entry.days||['Mon','Tue','Wed','Thu','Fri']); }
   entryValid(entry,curWeek){ const name=this.entryName(entry); if(!name) return false; const week=typeof entry==='string'?null:entry.week; return week===null||week===undefined||week===curWeek; }
@@ -568,7 +596,7 @@ class Component extends DCLogic {
   seg(active,label,onSel,small){ return {label,onSel,style:`flex:1;text-align:center;padding:${small?'6px 4px':'9px 8px'};border-radius:9px;font-weight:600;font-size:${small?'11px':'12.5px'};${active?'background:#c66a4a;color:#fff':'color:#8a7f6f'}`}; }
 
   renderVals(){
-    this.PD='Tue, Jul 8'; this.WL='Week of Jul 7';
+    this.PD=this.currentDateStr(); this.WL=this.currentWeekLabel();
     const signedIn=!!this.state.currentUser; const view=this.state.view; const me=this.ME;
     const mep=signedIn?this.personInfo(me):{i:'',c:'#7a9e7e'};
 
@@ -595,7 +623,7 @@ class Component extends DCLogic {
 
     const weekRows=this.DAYS.map(d=>({day:d,seg:['In','Remote','Off'].map(v=>this.seg(this.state.weekDays[d]===v,v,()=>{const wd={...this.state.weekDays,[d]:v};this.setState({weekDays:wd});},true))}));
     const plansList=this.state.plans.map(p=>{ const pp=this.personInfo(p.who); const canEdit=p.who===me;
-      return {...p,scopeLabel:'Weekly',initials:pp.i,canEdit,onEdit:canEdit?()=>this.editPlan(p):()=>{},
+      return {...p,scopeLabel:'Weekly',initials:pp.i,canEdit,when:this.relTime(p.ts),onEdit:canEdit?()=>this.editPlan(p):()=>{},
         avatarStyle:`width:32px;height:32px;flex:none;border-radius:50%;background:${pp.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px`}; });
     const currentWeekCycle=this.weekCycleKey(new Date());
     const myWeekPlan=this.state.plans.find(p=>p.who===me && p.scope==='weekly' && p.ts && this.weekCycleKey(new Date(p.ts))===currentWeekCycle);
@@ -608,7 +636,7 @@ class Component extends DCLogic {
     const peopleGroups=Object.keys(rc).map(name=>{ const members=rc[name].map(pn=>{ const p=this.personInfo(pn); const inNow=seated.has(pn); return {name:pn,initials:p.i,avatarStyle:`width:32px;height:32px;flex:none;border-radius:50%;background:${p.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px`,status:inNow?'In':'Away',statusStyle:`padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;${inNow?'background:#eaf1e7;color:#4f7a53':'background:#eee8dd;color:#a89a83'}`,
       canRemove:this.isAdmin && pn!==this.ME, onRemove:()=>this.removePerson(pn)}; }); const nIn=members.filter(m=>m.status==='In').length; return {title:name,presentText:`${nIn}/${members.length} in`,members}; });
 
-    const chat=this.state.chat.map(m=>{ const p=this.personInfo(m.name); const mine=m.name===me; return {initials:p.i,text:m.text,meta:`${m.name} · ${m.time}`,rowStyle:`display:flex;gap:9px;align-items:flex-start;${mine?'flex-direction:row-reverse':''}`,avatarStyle:`width:28px;height:28px;flex:none;border-radius:50%;background:${p.c};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700`,colStyle:`min-width:0;${mine?'text-align:right':''}`,bubbleStyle:`display:inline-block;text-align:left;max-width:230px;padding:9px 12px;font-size:13px;line-height:1.4;${mine?'background:#c66a4a;color:#fff;border-radius:13px 4px 13px 13px':'background:#fffdf9;border-radius:4px 13px 13px 13px'}`,metaStyle:'font-size:10.5px;color:#a89a83;margin-top:3px'}; });
+    const chat=this.state.chat.map(m=>{ const p=this.personInfo(m.name); const mine=m.name===me; return {initials:p.i,text:m.text,meta:`${m.name} · ${this.relTime(m.ts)}`,rowStyle:`display:flex;gap:9px;align-items:flex-start;${mine?'flex-direction:row-reverse':''}`,avatarStyle:`width:28px;height:28px;flex:none;border-radius:50%;background:${p.c};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700`,colStyle:`min-width:0;${mine?'text-align:right':''}`,bubbleStyle:`display:inline-block;text-align:left;max-width:230px;padding:9px 12px;font-size:13px;line-height:1.4;${mine?'background:#c66a4a;color:#fff;border-radius:13px 4px 13px 13px':'background:#fffdf9;border-radius:4px 13px 13px 13px'}`,metaStyle:'font-size:10.5px;color:#a89a83;margin-top:3px'}; });
 
     let nearbyText='Tap a free desk to book.';
     if(md){
@@ -624,7 +652,7 @@ class Component extends DCLogic {
       notSignedIn:false, signedIn:true, loginPeople, flash:this.state.flash,
       meInitials:mep.i, meAvatarStyle:`width:38px;height:38px;border-radius:50%;background:${mep.c};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px`,
       signOut:()=>this.signOut(), isAdmin:this.isAdmin,
-      dateStr:'Tue · July 8', pageTitle:titles[view]||'',
+      dateStr:this.PD, pageTitle:titles[view]||'',
       isHome:view==='home', isPlan:view==='plan', isDesks:view==='desks', isRoom:view==='room', isPeople:view==='people', isChat:view==='chat',
       tabs,
       heroKicker: md?(md.days.includes(today0)?"You're all set for today":'Booked this week, but not today'):'No desk booked yet',
